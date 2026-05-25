@@ -4,11 +4,12 @@ import { Board } from './core/models/kanban.model';
 import { Sidebar } from './layout/sidebar/sidebar';
 import { Header } from './layout/header/header';
 import { AddBoard } from './features/boards/add-board/add-board';
+import { BoardColumns } from './features/boards/board-columns/board-columns';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard],
+  imports: [Sidebar, Header, AddBoard, BoardColumns],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -26,6 +27,7 @@ export class App {
   protected readonly boards = computed(() => this.kanbanService.boards());
   protected readonly activeBoard = computed(() => this.kanbanService.activeBoard());
   protected readonly boardsCount = computed(() => this.boards().length);
+  protected readonly tasks = computed(() => this.kanbanService.tasks());
 
   constructor() {
     // 1. Detect and apply theme preferences

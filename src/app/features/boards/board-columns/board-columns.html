@@ -1,0 +1,39 @@
+<div class="board-columns-scrollable">
+  
+  <!-- Render Active Columns -->
+  @for (col of columns(); track col.columnId) {
+    <section class="board-column" [attr.aria-label]="col.name + ' column'">
+      
+      <!-- Column Header Info Section -->
+      <header class="column-header">
+        <span class="col-color-dot" [style.background-color]="col.color"></span>
+        <h4 class="col-title">{{ col.name }}</h4>
+        <span class="col-tasks-count">({{ getTasksForColumn(col.columnId).length }})</span>
+      </header>
+
+      <!-- Column Card Container -->
+      <div class="column-cards-container">
+        @for (task of getTasksForColumn(col.columnId); track task.taskId) {
+          <!-- Visual Placeholder Task Card -->
+          <article class="task-card" tabindex="0" role="button" [attr.aria-label]="task.title">
+            <h3 class="task-title">{{ task.title }}</h3>
+            <p class="task-subtasks-summary">
+              {{ getCompletedSubtasksCount(task) }} of {{ task.subtasks.length }} subtasks
+            </p>
+          </article>
+        }
+      </div>
+
+    </section>
+  }
+
+  <!-- Always Add on the Right: "+ New Column" Panel Button -->
+  <button 
+    class="new-column-panel" 
+    (click)="triggerAddColumn()" 
+    aria-label="Add new column to this board"
+  >
+    <span class="plus-text">+ New Column</span>
+  </button>
+
+</div>

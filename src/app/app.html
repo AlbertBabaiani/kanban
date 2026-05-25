@@ -28,13 +28,11 @@
     <!-- BOARD CANVAS VIEWPORT -->
     <main class="board-canvas-wrapper">
       @if (activeBoard()) {
-        <!-- Dynamic column structure will go here -->
-        <div class="board-columns-placeholder">
-          <div class="empty-columns-box">
-            <p class="empty-state-text">This board is empty. Create a new column to get started.</p>
-            <button class="btn btn-primary add-column-btn">+ Add New Column</button>
-          </div>
-        </div>
+        <app-board-columns
+          [columns]="activeBoard()!.columns"
+          [tasks]="tasks()"
+          (addColumn)="demoOptionsClick()"
+        />
       } @else {
         <!-- Empty State (No Boards Available) -->
         <div class="empty-boards-canvas">

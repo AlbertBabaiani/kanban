@@ -1,0 +1,155 @@
+@use '../../../../assets/scss/variables' as *;
+@use '../../../../assets/scss/mixins' as *;
+@use '../../../../assets/scss/themes' as *;
+
+// ==========================================================================
+// MODULAR BOARD COLUMNS CANVAS STYLES
+// ==========================================================================
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+// Scrollable Horizontal Columns Gutters
+.board-columns-scrollable {
+  display: flex;
+  gap: 2.4rem;
+  height: 100%;
+  width: 100%;
+  padding: 2.4rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
+}
+
+// Individual Column Layout
+.board-column {
+  width: 28rem;
+  height: 100%;
+  flex-shrink: 0;
+  @include flex-column;
+
+  // Header Details
+  .column-header {
+    @include flex-row-center;
+    gap: 1.2rem;
+    margin-bottom: 2.4rem;
+
+    .col-color-dot {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .col-title {
+      @include heading-s;
+      color: $color-medium-grey;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .col-tasks-count {
+      @include heading-s;
+      color: $color-medium-grey;
+      flex-shrink: 0;
+    }
+  }
+
+  // Scrollable Tasks wrapper
+  .column-cards-container {
+    flex: 1;
+    @include flex-column;
+    gap: 2rem;
+    overflow-y: auto;
+    padding-bottom: 6rem; // Allocates margin so the bottom-most card is never hidden by container margins
+    @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
+  }
+}
+
+// Visual Placeholder Task Card Sizing
+.task-card {
+  background-color: $theme-bg-surface;
+  padding: 2.3rem 1.6rem;
+  border-radius: $radius-lg;
+  box-shadow: $theme-shadow;
+  outline: none;
+  @include flex-column;
+  gap: 0.8rem;
+  @include interactive-transition(background-color, box-shadow, transform);
+
+  .task-title {
+    @include heading-m;
+    color: $theme-text-primary;
+    word-wrap: break-word;
+    @include interactive-transition(color);
+  }
+
+  .task-subtasks-summary {
+    @include body-m;
+    color: $color-medium-grey;
+  }
+
+  &:hover {
+    transform: translateY(-0.2rem);
+    box-shadow: 0 4px 10px rgba(54, 78, 126, 0.15);
+    
+    .task-title {
+      color: $color-purple;
+    }
+  }
+
+  &:focus-visible {
+    border: 2px solid $color-purple;
+  }
+}
+
+// Rightmost "+ New Column" Accent Panel Button
+.new-column-panel {
+  width: 28rem;
+  // Calculate height to subtract paddings and header line heights harmoniously
+  height: calc(100% - 8.4rem);
+  margin-top: 4.8rem;
+  flex-shrink: 0;
+  border-radius: $radius-lg;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  @include flex-center;
+  
+  // Custom Dynamic Light Theme Gradient
+  background: linear-gradient(180deg, rgba(228, 235, 250, 0.5) 0%, rgba(228, 235, 250, 0.1) 100%);
+  @include interactive-transition(background-color, transform, opacity);
+
+  .plus-text {
+    font-size: 2.4rem;
+    font-weight: $font-weight-bold;
+    color: $color-medium-grey;
+    @include interactive-transition(color);
+  }
+
+  &:hover {
+    background: linear-gradient(180deg, rgba(228, 235, 250, 0.8) 0%, rgba(228, 235, 250, 0.2) 100%);
+    
+    .plus-text {
+      color: $color-purple;
+    }
+  }
+
+  // Custom Dynamic Dark Theme Gradient
+  [data-theme="dark"] & {
+    background: linear-gradient(180deg, rgba(43, 44, 55, 0.5) 0%, rgba(43, 44, 55, 0.05) 100%);
+    
+    &:hover {
+      background: linear-gradient(180deg, rgba(43, 44, 55, 0.8) 0%, rgba(43, 44, 55, 0.1) 100%);
+    }
+  }
+
+  &:focus-visible {
+    border: 2px solid $color-purple;
+  }
+}
