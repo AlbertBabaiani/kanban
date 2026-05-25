@@ -1,0 +1,220 @@
+@use '../../../assets/scss/variables' as *;
+@use '../../../assets/scss/mixins' as *;
+@use '../../../assets/scss/themes' as *;
+
+// ==========================================================================
+// MODULAR SIDEBAR DESIGN STYLES
+// ==========================================================================
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.app-sidebar {
+  @include flex-column;
+  width: $sidebar-width-desktop;
+  height: 100%;
+  background-color: $theme-bg-surface;
+  border-right: 1px solid $theme-border;
+  @include interactive-transition(transform, background-color, border-color);
+  
+  @include respond-to(tablet-only) {
+    width: $sidebar-width-tablet;
+  }
+
+  // Sidebar Header / Logo area
+  .sidebar-logo-container {
+    height: $header-height-desktop;
+    @include flex-row-center;
+    padding-left: 3.2rem;
+    
+    .brand-logo {
+      height: 2.6rem;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  // Navigation Panel
+  .sidebar-navigation {
+    flex: 1;
+    padding-top: 3.2rem;
+    padding-right: 2.4rem;
+    overflow-y: auto;
+    @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
+
+    .sidebar-title {
+      @include heading-s;
+      color: $color-medium-grey;
+      padding-left: 3.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .boards-list {
+      list-style: none;
+      
+      li {
+        margin-bottom: 0.4rem;
+      }
+    }
+  }
+}
+
+// Nav Button Styles (Sidebar Cards & Links)
+.board-nav-btn {
+  width: 100%;
+  @include flex-row-center;
+  gap: 1.6rem;
+  padding: 1.4rem 2.4rem 1.4rem 3.2rem;
+  border-radius: 0 100rem 100rem 0;
+  color: $color-medium-grey;
+  font-size: 1.5rem;
+  font-weight: $font-weight-bold;
+  text-align: left;
+  @include interactive-transition(background-color, color);
+  
+  .icon-board {
+    width: 1.6rem;
+    height: 1.6rem;
+    filter: invert(59%) sepia(12%) saturate(464%) hue-rotate(178deg) brightness(91%) contrast(85%); // Converts grey SVG
+    @include interactive-transition(filter);
+  }
+
+  &:hover {
+    background-color: $color-lighter-blue;
+    color: $color-purple;
+    
+    .icon-board {
+      filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%); // Converts purple SVG
+    }
+  }
+
+  &.active {
+    background-color: $color-purple;
+    color: $color-white;
+    
+    .icon-board {
+      filter: brightness(0) invert(1); // Converts white SVG
+    }
+    
+    &:hover {
+      background-color: $color-purple-hover;
+      color: $color-white;
+    }
+  }
+
+  &.create-board-btn {
+    color: $color-purple;
+    @include interactive-transition(color);
+    
+    .icon-purple-filter {
+      filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%);
+    }
+
+    &:hover {
+      background-color: transparent;
+      color: $color-purple-hover;
+      
+      .icon-board {
+        filter: invert(66%) sepia(85%) saturate(1001%) hue-rotate(204deg) brightness(101%) contrast(101%); // Hover purple
+      }
+    }
+  }
+}
+
+// Sidebar Footer
+.sidebar-footer {
+  padding: 2.4rem;
+  @include flex-column;
+  gap: 1.6rem;
+
+  // Theme Toggler Box
+  .theme-toggler-box {
+    @include flex-center;
+    gap: 2.4rem;
+    background-color: $theme-bg-app;
+    padding: 1.4rem;
+    border-radius: $radius-md;
+    @include interactive-transition(background-color);
+
+    .icon-theme {
+      width: 1.9rem;
+      height: 1.9rem;
+      flex-shrink: 0;
+    }
+  }
+
+  // Hide Sidebar Button
+  .hide-sidebar-btn {
+    @include flex-row-center;
+    gap: 1.6rem;
+    padding: 1.4rem 0 1.4rem 0.8rem;
+    color: $color-medium-grey;
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    @include interactive-transition(color);
+
+    .icon-hide {
+      width: 1.8rem;
+      height: 1.6rem;
+      color: $color-medium-grey;
+      @include interactive-transition(color);
+    }
+
+    &:hover {
+      color: $color-purple;
+      
+      .icon-hide {
+        color: $color-purple;
+      }
+    }
+  }
+}
+
+// Elegant Slider Toggle Switch Styling
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 4rem;
+  height: 2rem;
+  flex-shrink: 0;
+  
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-purple;
+    border-radius: $radius-full;
+    @include interactive-transition(background-color);
+    
+    &::before {
+      position: absolute;
+      content: "";
+      height: 1.4rem;
+      width: 1.4rem;
+      left: 0.3rem;
+      bottom: 0.3rem;
+      background-color: $color-white;
+      border-radius: 50%;
+      @include interactive-transition(transform);
+    }
+  }
+  
+  input:checked + .switch-slider {
+    background-color: $color-purple-hover;
+  }
+  
+  input:checked + .switch-slider::before {
+    transform: translateX(2rem);
+  }
+}

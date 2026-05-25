@@ -1,0 +1,393 @@
+@use '../assets/scss/variables' as *;
+@use '../assets/scss/mixins' as *;
+@use '../assets/scss/themes' as *;
+
+// ==========================================================================
+// KANBAN APP SHELL LAYOUT STYLES
+// ==========================================================================
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+// --- Main Scroll Canvas Viewport ---
+.main-layout-viewport {
+  flex: 1;
+  @include flex-column;
+  height: 100vh;
+  margin-left: $sidebar-width-desktop;
+  background-color: $theme-bg-app;
+  @include interactive-transition(margin-left, background-color);
+  
+  @include respond-to(tablet-only) {
+    margin-left: $sidebar-width-tablet;
+  }
+  
+  @include respond-to(mobile) {
+    margin-left: 0 !important; // Full width on mobile sizes
+  }
+}
+
+// --- Dynamic Content Scroll Canvas ---
+.board-canvas-wrapper {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
+}
+
+// Canvas Empty State Placement
+.empty-columns-box {
+  @include flex-column;
+  @include flex-center;
+  gap: 3.2rem;
+  height: 100%;
+  width: 100%;
+  padding: 3.2rem;
+  text-align: center;
+
+  .empty-state-text {
+    font-size: 1.8rem;
+    font-weight: $font-weight-bold;
+    color: $color-medium-grey;
+    max-width: 48rem;
+  }
+
+  .add-column-btn {
+    padding: 1.5rem 2.4rem;
+    background-color: $color-purple;
+    color: $color-white;
+    font-size: 1.5rem;
+
+    &:hover {
+      background-color: $color-purple-hover;
+    }
+  }
+}
+
+// App-wide Empty State card (When no boards exist)
+.empty-boards-canvas {
+  @include flex-center;
+  height: 100%;
+  width: 100%;
+  padding: 3.2rem;
+  
+  .empty-state-card {
+    @include flex-column;
+    @include flex-center;
+    max-width: 52rem;
+    padding: 4.8rem 3.2rem;
+    background-color: $theme-bg-surface;
+    border: 1px solid $theme-border;
+    border-radius: $radius-lg;
+    text-align: center;
+    box-shadow: $theme-shadow;
+    @include interactive-transition(background-color, border-color, box-shadow);
+
+    .icon-empty-board {
+      width: 6.4rem;
+      height: 6.4rem;
+      margin-bottom: 2.4rem;
+      opacity: 0.35;
+    }
+
+    .empty-state-heading {
+      @include heading-l;
+      color: $theme-text-primary;
+      margin-bottom: 1.6rem;
+      @include interactive-transition(color);
+    }
+
+    .empty-state-text {
+      font-size: 1.4rem;
+      line-height: 2.2rem;
+      color: $color-medium-grey;
+      margin-bottom: 3.2rem;
+    }
+
+    .add-first-board-btn {
+      padding: 1.5rem 2.4rem;
+      background-color: $color-purple;
+      color: $color-white;
+      font-size: 1.5rem;
+
+      &:hover {
+        background-color: $color-purple-hover;
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// 3. FLOATING EYE-ICON BUTTON (SHOW SIDEBAR)
+// ==========================================================================
+.floating-show-sidebar-btn {
+  position: fixed;
+  bottom: 3.2rem;
+  left: 0;
+  z-index: 9;
+  background-color: $color-purple;
+  color: $color-white;
+  width: 5.6rem;
+  height: 4.8rem;
+  border-radius: 0 100rem 100rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 1.6rem;
+  box-shadow: $shadow-light;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  @include interactive-transition(transform, opacity, background-color);
+
+  img {
+    width: 1.6rem;
+    height: 1.2rem;
+    filter: brightness(0) invert(1); // Converts SVG icon to white
+  }
+
+  &:hover {
+    background-color: $color-purple-hover;
+  }
+
+  &.visible {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @include respond-to(mobile) {
+    display: none !important; // Never visible on mobile sizes
+  }
+}
+
+// ==========================================================================
+// 4. MOBILE BOARD SELECTOR MODAL / DROP-DOWN OVERLAY
+// ==========================================================================
+.mobile-menu-backdrop {
+  position: fixed;
+  top: $header-height-mobile;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(0.4rem);
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  padding-top: 1.6rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.mobile-menu-overlay {
+  background-color: $theme-bg-surface;
+  width: 26.4rem;
+  max-height: 80vh;
+  border-radius: $radius-lg;
+  padding: 1.6rem 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-dark;
+  @include interactive-transition(background-color);
+  animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  .sidebar-title {
+    @include heading-s;
+    color: $color-medium-grey;
+    padding-left: 2.4rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .boards-list {
+    list-style: none;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 2.4rem;
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+  }
+
+  // Mobile nav buttons list styling
+  .board-nav-btn {
+    width: 100%;
+    @include flex-row-center;
+    gap: 1.6rem;
+    padding: 1.4rem 2.4rem 1.4rem 2.4rem;
+    border-radius: 0 100rem 100rem 0;
+    color: $color-medium-grey;
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    text-align: left;
+    @include interactive-transition(background-color, color);
+    
+    .icon-board {
+      width: 1.6rem;
+      height: 1.6rem;
+      filter: invert(59%) sepia(12%) saturate(464%) hue-rotate(178deg) brightness(91%) contrast(85%); // Converts grey SVG
+      @include interactive-transition(filter);
+    }
+
+    &:hover {
+      background-color: $color-lighter-blue;
+      color: $color-purple;
+      
+      .icon-board {
+        filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%); // Converts purple SVG
+      }
+    }
+
+    &.active {
+      background-color: $color-purple;
+      color: $color-white;
+      
+      .icon-board {
+        filter: brightness(0) invert(1); // Converts white SVG
+      }
+      
+      &:hover {
+        background-color: $color-purple-hover;
+        color: $color-white;
+      }
+    }
+
+    &.create-board-btn {
+      color: $color-purple;
+      @include interactive-transition(color);
+      
+      .icon-purple-filter {
+        filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%);
+      }
+
+      &:hover {
+        background-color: transparent;
+        color: $color-purple-hover;
+        
+        .icon-board {
+          filter: invert(66%) sepia(85%) saturate(1001%) hue-rotate(204deg) brightness(101%) contrast(101%); // Hover purple
+        }
+      }
+    }
+  }
+
+  .sidebar-footer {
+    border-top: 1px solid $theme-border;
+    padding: 1.6rem 2.4rem 0 2.4rem;
+    margin-top: 1.6rem;
+
+    .theme-toggler-box {
+      @include flex-center;
+      gap: 2.4rem;
+      background-color: $theme-bg-app;
+      padding: 1.4rem;
+      border-radius: $radius-md;
+      @include interactive-transition(background-color);
+
+      .icon-theme {
+        width: 1.9rem;
+        height: 1.9rem;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+// Elegant Slider Toggle Switch Styling in mobile menu
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 4rem;
+  height: 2rem;
+  flex-shrink: 0;
+  
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-purple;
+    border-radius: $radius-full;
+    @include interactive-transition(background-color);
+    
+    &::before {
+      position: absolute;
+      content: "";
+      height: 1.4rem;
+      width: 1.4rem;
+      left: 0.3rem;
+      bottom: 0.3rem;
+      background-color: $color-white;
+      border-radius: 50%;
+      @include interactive-transition(transform);
+    }
+  }
+  
+  input:checked + .switch-slider {
+    background-color: $color-purple-hover;
+  }
+  
+  input:checked + .switch-slider::before {
+    transform: translateX(2rem);
+  }
+}
+
+// ==========================================================================
+// 5. LAYOUT ADJUSTMENT MODIFIERS (CLOSED SIDEBAR EFFECT)
+// ==========================================================================
+.sidebar-closed {
+  app-sidebar {
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  .main-layout-viewport {
+    margin-left: 0;
+  }
+}
+
+// ==========================================================================
+// 6. COMPONENT SELECTOR STRUCTURAL ANCHORINGS
+// ==========================================================================
+app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 10;
+  @include interactive-transition(transform);
+  
+  @include respond-to(mobile) {
+    display: none !important;
+  }
+}
+
+app-header {
+  @include flex-row-center;
+}
+
+// ==========================================================================
+// 7. ANIMATIONS
+// ==========================================================================
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-2rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

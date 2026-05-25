@@ -1,0 +1,138 @@
+@use '../../../assets/scss/variables' as *;
+@use '../../../assets/scss/mixins' as *;
+@use '../../../assets/scss/themes' as *;
+
+// ==========================================================================
+// MODULAR HEADER DESIGN STYLES
+// ==========================================================================
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.app-top-header {
+  height: $header-height-desktop;
+  @include flex-between;
+  padding: 0 3.2rem;
+  background-color: $theme-bg-surface;
+  border-bottom: 1px solid $theme-border;
+  @include interactive-transition(background-color, border-color);
+
+  @include respond-to(mobile) {
+    height: $header-height-mobile;
+    padding: 0 1.6rem;
+  }
+
+  // Header Title & Logo Accents
+  .header-logo-mobile {
+    display: none;
+    margin-right: 1.6rem;
+    
+    @include respond-to(mobile) {
+      @include flex-row-center;
+    }
+
+    .mobile-logo-pills {
+      width: 2.4rem;
+      height: 2.5rem;
+    }
+  }
+
+  .header-title-box {
+    @include flex-row-center;
+    gap: 0.8rem;
+    overflow: hidden;
+
+    .header-board-title {
+      @include heading-xl;
+      color: $theme-text-primary;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      @include interactive-transition(color);
+
+      @include respond-to(mobile) {
+        font-size: 1.8rem;
+        line-height: 2.3rem;
+      }
+    }
+
+    .mobile-board-trigger {
+      display: none;
+      padding: 0.4rem;
+      
+      @include respond-to(mobile) {
+        display: block;
+      }
+
+      .icon-chevron {
+        width: 1rem;
+        height: 0.7rem;
+        @include interactive-transition(transform);
+        
+        &.rotated {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  // Actions Box (Add Task and Options)
+  .header-actions {
+    @include flex-row-center;
+    gap: 2.4rem;
+    
+    @include respond-to(mobile) {
+      gap: 1.2rem;
+    }
+
+    .add-task-cta {
+      @include flex-center;
+      gap: 0.8rem;
+      padding: 1.5rem 2.4rem;
+      background-color: $color-purple;
+      color: $color-white;
+      border-radius: $radius-full;
+      
+      .icon-plus-mobile {
+        width: 1.2rem;
+        height: 1.2rem;
+        filter: brightness(0) invert(1); // Converts SVG icon to white
+      }
+
+      .btn-text {
+        font-size: 1.5rem;
+        font-weight: $font-weight-bold;
+      }
+
+      &:hover:not(:disabled) {
+        background-color: $color-purple-hover;
+      }
+
+      @include respond-to(mobile) {
+        padding: 1rem 1.8rem;
+        
+        .btn-text {
+          display: none; // Icon only on mobile layout
+        }
+      }
+    }
+
+    .header-options-btn {
+      padding: 0.8rem;
+      cursor: pointer;
+      border-radius: $radius-full;
+      @include flex-center;
+
+      .icon-options {
+        width: 0.5rem;
+        height: 2rem;
+      }
+      
+      &:hover:not(:disabled) {
+        background-color: $theme-subtask-bg-hover;
+      }
+    }
+  }
+}

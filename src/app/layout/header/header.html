@@ -1,0 +1,50 @@
+<header class="app-top-header">
+  <!-- Responsive Mobile Logo -->
+  <div class="header-logo-mobile">
+    <img src="assets/icons/logo-mobile.svg" alt="Kanban Logo" class="mobile-logo-pills" />
+  </div>
+
+  <!-- Active Board Name / Dropdown Trigger (Mobile Responsive) -->
+  <div class="header-title-box">
+    <h1 class="header-board-title">{{ activeBoard()?.name || 'No Active Board' }}</h1>
+    <button 
+      class="mobile-board-trigger" 
+      (click)="triggerToggleMobileMenu()" 
+      [attr.aria-expanded]="isMobileMenuOpen()"
+      aria-label="Toggle boards switcher menu"
+    >
+      <img 
+        src="assets/icons/icon-chevron-down.svg" 
+        alt="" 
+        class="icon-chevron" 
+        [class.rotated]="isMobileMenuOpen()" 
+        aria-hidden="true"
+      />
+    </button>
+  </div>
+
+  <!-- Header Options & Primary CTA -->
+  <div class="header-actions">
+    <!-- Primary Add Task CTA Button -->
+    <button 
+      class="btn btn-primary add-task-cta" 
+      [disabled]="!activeBoard()" 
+      (click)="triggerCreateTask()"
+      aria-label="Add new task card"
+    >
+      <!-- Plus Icon on Desktop/Mobile -->
+      <img src="assets/icons/icon-add-task-mobile.svg" alt="" class="icon-plus-mobile" aria-hidden="true" />
+      <span class="btn-text">Add New Task</span>
+    </button>
+
+    <!-- Vertical Menu Options Ellipsis -->
+    <button 
+      class="header-options-btn" 
+      [disabled]="!activeBoard()" 
+      (click)="triggerBoardOptions()"
+      aria-label="Board options menu"
+    >
+      <img src="assets/icons/icon-vertical-ellipsis.svg" alt="Options" class="icon-options" />
+    </button>
+  </div>
+</header>

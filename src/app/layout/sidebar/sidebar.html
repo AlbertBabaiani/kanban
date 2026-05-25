@@ -1,0 +1,78 @@
+<aside class="app-sidebar" aria-label="Primary Navigation">
+  <!-- Brand Logo -->
+  <div class="sidebar-logo-container">
+    <img
+      [src]="theme() === 'dark' ? 'icons/logo-light.svg' : 'icons/logo-dark.svg'"
+      alt="Kanban Logo"
+      class="brand-logo"
+    />
+  </div>
+
+  <!-- Boards List Navigator -->
+  <nav class="sidebar-navigation">
+    <h2 class="sidebar-title">All Boards ({{ boardsCount() }})</h2>
+
+    <ul class="boards-list" role="list">
+      @for (board of boards(); track board.boardId) {
+        <li role="listitem">
+          <button
+            class="board-nav-btn"
+            [class.active]="activeBoard()?.boardId === board.boardId"
+            (click)="triggerSelectBoard(board)"
+            [attr.aria-current]="activeBoard()?.boardId === board.boardId ? 'page' : null"
+          >
+            <!-- Board SVG Icon from assets -->
+            <img src="icons/icon-board.svg" alt="" class="icon-board" aria-hidden="true" />
+            <span class="board-name">{{ board.name }}</span>
+          </button>
+        </li>
+      }
+
+      <!-- Create Board Trigger Button -->
+      <li>
+        <button class="board-nav-btn create-board-btn" (click)="triggerCreateBoard()">
+          <img
+            src="icons/icon-board.svg"
+            alt=""
+            class="icon-board icon-purple-filter"
+            aria-hidden="true"
+          />
+          <span>+ Create New Board</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Bottom Actions Container -->
+  <div class="sidebar-footer">
+    <!-- Theme Switcher Toggler -->
+    <div class="theme-toggler-box">
+      <!-- Light Theme Icon -->
+      <img src="icons/icon-light-theme.svg" alt="Light theme" class="icon-theme" />
+
+      <!-- Toggle Switch -->
+      <label class="switch-toggle" for="themeToggler" aria-label="Toggle dark theme mode">
+        <input
+          type="checkbox"
+          id="themeToggler"
+          [checked]="theme() === 'dark'"
+          (change)="triggerToggleTheme()"
+        />
+        <span class="switch-slider"></span>
+      </label>
+
+      <!-- Dark Theme Icon -->
+      <img src="icons/icon-dark-theme.svg" alt="Dark theme" class="icon-theme" />
+    </div>
+
+    <!-- Hide Sidebar Toggler Link -->
+    <button
+      class="hide-sidebar-btn"
+      (click)="triggerToggleSidebar()"
+      aria-label="Hide sidebar menu"
+    >
+      <img src="icons/icon-hide-sidebar.svg" alt="" class="icon-hide" aria-hidden="true" />
+      <span>Hide Sidebar</span>
+    </button>
+  </div>
+</aside>

@@ -23,7 +23,7 @@ export interface Task {
   columnId: string;
   title: string;
   description?: string;
-  status: string; // Keep status aligned with column name
+  status: string;
   order: number;
   subtasks: Subtask[];
 }
