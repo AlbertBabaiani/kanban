@@ -20,14 +20,18 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+// --- Dynamic Root font scaling for REM calculations ---
+html {
+  font-size: 62.5%; // Sets 1rem = 10px for responsive, structured scaling
+}
+
 // --- Smooth Body/App Viewport Baselines ---
-html,
 body {
   height: 100%;
   width: 100%;
   font-family: $font-family;
-  font-size: 13px;
-  line-height: 23px;
+  font-size: 1.3rem; // Restores baseline Body L (13px)
+  line-height: 2.3rem;
   font-weight: $font-weight-medium;
   background-color: $theme-bg-app;
   color: $theme-text-primary;
@@ -96,14 +100,14 @@ textarea,
 select {
   width: 100%;
   font-family: $font-family;
-  font-size: 13px;
-  line-height: 23px;
+  font-size: 1.3rem;
+  line-height: 2.3rem;
   font-weight: $font-weight-medium;
   color: $theme-text-primary;
   background-color: transparent;
   border: 1px solid $theme-dropdown-border;
   border-radius: $radius-sm;
-  padding: 8px 16px;
+  padding: 0.8rem 1.6rem;
   outline: none;
   @include interactive-transition(border-color);
   
@@ -127,7 +131,7 @@ select {
 
 textarea {
   resize: vertical;
-  min-height: 112px;
+  min-height: 11.2rem;
 }
 
 // --- Dynamic Subtask Row Styling Utilities ---
@@ -135,7 +139,7 @@ textarea {
   @include flex-row-center;
   background-color: $theme-subtask-bg;
   border-radius: $radius-sm;
-  padding: 12px;
+  padding: 1.2rem;
   cursor: pointer;
   @include interactive-transition(background-color);
   
@@ -149,4 +153,16 @@ textarea {
       text-decoration: line-through;
     }
   }
+}
+
+// --- Angular Material Typography scale compatibility safeguards ---
+// Force standard baseline scales to restore default component dimensions under 62.5% scaling.
+.mat-mdc-dialog-container,
+.mat-mdc-select,
+.mat-mdc-menu-panel,
+.mat-mdc-checkbox,
+.mat-mdc-card,
+.mat-mdc-tab-group,
+.mat-mdc-form-field {
+  font-size: 1.4rem !important;
 }

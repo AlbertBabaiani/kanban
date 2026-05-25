@@ -32,46 +32,46 @@
 // --- Typography Hierarchies ---
 @mixin heading-xl {
   font-family: $font-family;
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: $font-weight-bold;
-  line-height: 30px;
+  line-height: 3rem;
 }
 
 @mixin heading-l {
   font-family: $font-family;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: $font-weight-bold;
-  line-height: 23px;
+  line-height: 2.3rem;
 }
 
 @mixin heading-m {
   font-family: $font-family;
-  font-size: 15px;
+  font-size: 1.5rem;
   font-weight: $font-weight-bold;
-  line-height: 19px;
+  line-height: 1.9rem;
 }
 
 @mixin heading-s {
   font-family: $font-family;
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: $font-weight-bold;
-  line-height: 15px;
-  letter-spacing: 2.4px;
+  line-height: 1.5rem;
+  letter-spacing: 0.24rem;
   text-transform: uppercase;
 }
 
 @mixin body-l {
   font-family: $font-family;
-  font-size: 13px;
+  font-size: 1.3rem;
   font-weight: $font-weight-medium;
-  line-height: 23px;
+  line-height: 2.3rem;
 }
 
 @mixin body-m {
   font-family: $font-family;
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: $font-weight-bold;
-  line-height: 15px;
+  line-height: 1.5rem;
 }
 
 // --- Flexbox Utility Mixins ---
