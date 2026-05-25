@@ -1,7 +1,7 @@
 <div class="app-layout" [class.sidebar-closed]="!isSidebarOpen()">
-  // ========================================================================== // 1. MODULAR
-  NAVIGATION SIDEBAR (DESKTOP / TABLET) //
-  ==========================================================================
+  // ==========================================================================
+  // 1. MODULAR NAVIGATION SIDEBAR (DESKTOP / TABLET)
+  // ==========================================================================
   <app-sidebar
     [boards]="boards()"
     [activeBoard]="activeBoard()"
@@ -9,11 +9,12 @@
     (toggleSidebar)="toggleSidebar()"
     (toggleTheme)="toggleTheme()"
     (selectBoard)="selectBoard($event)"
-    (createBoard)="createNewBoardDemo()"
+    (createBoard)="openAddBoardModal()"
   />
 
-  // ========================================================================== // 2. MAIN VIEWPORT
-  & HEADER COMPONENT // ==========================================================================
+  // ==========================================================================
+  // 2. MAIN VIEWPORT & HEADER COMPONENT
+  // ==========================================================================
   <div class="main-layout-viewport">
     <!-- TOP HEADER -->
     <app-header
@@ -48,7 +49,7 @@
             <p class="empty-state-text">
               Get started by creating your very first board in the navigation sidebar.
             </p>
-            <button class="btn btn-primary add-first-board-btn" (click)="createNewBoardDemo()">
+            <button class="btn btn-primary add-first-board-btn" (click)="openAddBoardModal()">
               + Create First Board
             </button>
           </div>
@@ -57,9 +58,9 @@
     </main>
   </div>
 
-  // ========================================================================== // 3. FLOATING
-  EYE-ICON BUTTON (SHOW SIDEBAR) //
-  ==========================================================================
+  // ==========================================================================
+  // 3. FLOATING EYE-ICON BUTTON (SHOW SIDEBAR)
+  // ==========================================================================
   <button
     class="floating-show-sidebar-btn"
     [class.visible]="!isSidebarOpen()"
@@ -69,9 +70,9 @@
     <img src="icons/icon-show-sidebar.svg" alt="" aria-hidden="true" />
   </button>
 
-  // ========================================================================== // 4. MOBILE BOARD
-  SELECTOR MODAL / DROP-DOWN OVERLAY //
-  ==========================================================================
+  // ==========================================================================
+  // 4. MOBILE BOARD SELECTOR MODAL / DROP-DOWN OVERLAY
+  // ==========================================================================
   @if (isMobileMenuOpen()) {
     <div class="mobile-menu-backdrop" (click)="toggleMobileMenu()" role="presentation">
       <div
@@ -101,10 +102,10 @@
               </button>
             </li>
           }
-
+          
           <!-- Create Board Mobile Button -->
           <li>
-            <button class="board-nav-btn create-board-btn" (click)="createNewBoardDemo()">
+            <button class="board-nav-btn create-board-btn" (click)="openAddBoardModal()">
               <img
                 src="assets/icons/icon-board.svg"
                 alt=""
@@ -139,4 +140,15 @@
       </div>
     </div>
   }
+
+  // ==========================================================================
+  // 5. DYNAMIC BOARD CREATION DIALOG MODAL (ADD BOARD OVERLAY)
+  // ==========================================================================
+  @if (isAddBoardOpen()) {
+    <app-add-board
+      (close)="closeAddBoardModal()"
+      (submit)="onBoardSubmit($event)"
+    />
+  }
+
 </div>

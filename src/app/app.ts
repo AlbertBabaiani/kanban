@@ -3,11 +3,12 @@ import { KanbanService } from './core/services/kanban-service';
 import { Board } from './core/models/kanban.model';
 import { Sidebar } from './layout/sidebar/sidebar';
 import { Header } from './layout/header/header';
+import { AddBoard } from './features/boards/add-board/add-board';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header],
+  imports: [Sidebar, Header, AddBoard],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -19,6 +20,7 @@ export class App {
   protected readonly isSidebarOpen = signal<boolean>(true);
   protected readonly theme = signal<'light' | 'dark'>('light');
   protected readonly isMobileMenuOpen = signal<boolean>(false);
+  protected readonly isAddBoardOpen = signal<boolean>(false);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -64,22 +66,28 @@ export class App {
     this.isMobileMenuOpen.update(val => !val);
   }
 
-  // --- Temporary Demo CRUD Helpers ---
-  protected createNewBoardDemo(): void {
-    const boardName = prompt('Enter New Board Name:');
-    if (!boardName) return;
-
-    this.kanbanService.createBoard(boardName, [
-      { name: 'Todo', color: '#49C4E5' },
-      { name: 'Doing', color: '#8471F2' },
-      { name: 'Done', color: '#67E2AE' }
-    ]).then(id => {
-      console.log('Board successfully created with ID:', id);
-    }).catch(err => {
-      console.error('Failed to create board:', err);
-    });
+  // --- Board Creation Modal Handlers ---
+  protected openAddBoardModal(): void {
+    this.isAddBoardOpen.set(true);
+    this.isMobileMenuOpen.set(false); // Close mobile selection menu
   }
 
+  protected closeAddBoardModal(): void {
+    this.isAddBoardOpen.set(false);
+  }
+
+  protected onBoardSubmit(event: { name: string; columns: { name: string; color: string }[] }): void {
+    this.kanbanService.createBoard(event.name, event.columns)
+      .then(id => {
+        console.log('Board successfully created with ID:', id);
+        this.isAddBoardOpen.set(false); // Close modal
+      })
+      .catch(err => {
+        console.error('Failed to create board:', err);
+      });
+  }
+
+  // --- Temporary Demo CRUD Helpers ---
   protected demoTaskCreate(): void {
     const active = this.activeBoard();
     if (!active || active.columns.length === 0) return;
