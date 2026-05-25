@@ -98,7 +98,7 @@
   &:hover {
     transform: translateY(-0.2rem);
     box-shadow: 0 4px 10px rgba(54, 78, 126, 0.15);
-    
+
     .task-title {
       color: $color-purple;
     }
@@ -113,14 +113,14 @@
   width: 28rem;
   // Calculate height to subtract paddings and header line heights harmoniously
   height: calc(100% - 8.4rem);
-  margin-top: 4.8rem;
+  margin-top: 3.8rem;
   flex-shrink: 0;
   border-radius: $radius-lg;
   border: none;
   outline: none;
   cursor: pointer;
   @include flex-center;
-  
+
   // Theme-aware solid background (e.g., #E4EBFA on light mode, #20212C on dark mode)
   background-color: $theme-new-column-bg;
   @include interactive-transition(background-color, transform, opacity);
@@ -134,7 +134,7 @@
 
   &:hover {
     background-color: $theme-new-column-hover;
-    
+
     .plus-text {
       color: $color-purple;
     }
@@ -179,13 +179,13 @@
     @include interactive-transition(background-color, color, transform);
 
     &:hover {
-      background-color: color.adjust(#E4EBFA, $lightness: -4%);
+      background-color: color.adjust(#e4ebfa, $lightness: -4%);
       transform: scale(1.05);
     }
 
-    [data-theme="dark"] & {
+    [data-theme='dark'] & {
       background-color: $color-white;
-      
+
       &:hover {
         background-color: color.adjust($color-white, $lightness: -8%);
       }
