@@ -11,6 +11,7 @@
         <input 
           type="text" 
           id="boardNameInput"
+          #boardNameInputRef
           #boardInput
           placeholder="e.g. Platform Launch" 
           [value]="boardName()"
@@ -83,6 +84,7 @@
     <!-- Submit Board Creation CTA -->
     <button 
       class="btn btn-primary submit-board-btn" 
+      [disabled]="columns().length === 0"
       (click)="triggerSubmit()"
       aria-label="Create new board"
     >

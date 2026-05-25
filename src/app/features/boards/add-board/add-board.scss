@@ -198,7 +198,7 @@
   font-weight: $font-weight-bold;
   border-radius: $radius-full;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: $color-purple-hover;
   }
 }

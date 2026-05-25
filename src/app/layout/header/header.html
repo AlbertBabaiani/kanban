@@ -28,7 +28,7 @@
     <!-- Primary Add Task CTA Button -->
     <button 
       class="btn btn-primary add-task-cta" 
-      [disabled]="!activeBoard()" 
+      [disabled]="!activeBoard() || activeBoard()?.columns?.length === 0" 
       (click)="triggerCreateTask()"
       aria-label="Add new task card"
     >

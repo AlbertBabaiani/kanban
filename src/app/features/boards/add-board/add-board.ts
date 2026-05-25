@@ -1,4 +1,4 @@
-import { Component, signal, output } from '@angular/core';
+import { Component, signal, output, viewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-add-board',
@@ -7,7 +7,10 @@ import { Component, signal, output } from '@angular/core';
   templateUrl: './add-board.html',
   styleUrl: './add-board.scss'
 })
-export class AddBoard {
+export class AddBoard implements AfterViewInit {
+  // Query reference to the input element
+  private readonly boardNameInput = viewChild<ElementRef<HTMLInputElement>>('boardNameInputRef');
+
   // --- Outputs ---
   public readonly onClose = output<void>({ alias: 'close' });
   public readonly onSubmit = output<{ name: string; columns: { name: string; color: string }[] }>({ alias: 'submit' });
@@ -76,5 +79,13 @@ export class AddBoard {
         color: col.color
       }))
     });
+  }
+
+  public ngAfterViewInit(): void {
+    // Direct keyboard focus to input element dynamically
+    const inputEl = this.boardNameInput()?.nativeElement;
+    if (inputEl) {
+      setTimeout(() => inputEl.focus(), 50); // Small timeout ensures elements are fully painted in the DOM
+    }
   }
 }
