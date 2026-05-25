@@ -19,6 +19,8 @@
   --color-subtask-completed: #{$color-medium-grey};
   --color-dropdown-bg:       #{$color-white};
   --color-dropdown-border:   rgba(130, 143, 163, 0.25);
+  --color-new-column-bg:     #{$color-lighter-blue};
+  --color-new-column-hover:  #D8E2F8; // Slightly darker on hover for light theme
   
   // Scrollbars
   --scrollbar-track:         #{$color-light-grey};
@@ -27,7 +29,7 @@
 
 [data-theme="dark"] {
   // Dark Theme Configuration
-  --color-bg-app:            #{$color-very-dark-blue};
+  --color-bg-app:            #20212C; // Primary app background on dark theme
   --color-bg-surface:        #{$color-darker-grey};
   --color-border:            #{$color-lines-dark};
   --color-text-primary:      #{$color-white};
@@ -40,6 +42,8 @@
   --color-subtask-completed: rgba(255, 255, 255, 0.5);
   --color-dropdown-bg:       #{$color-dark-grey};
   --color-dropdown-border:   #{$color-lines-dark};
+  --color-new-column-bg:     #2B2C37; // Pinned solid dark color matching specs
+  --color-new-column-hover:  #3E3F4E; // Slightly lighter on hover for dark theme
   
   // Scrollbars
   --scrollbar-track:         #{$color-darker-grey};
@@ -60,6 +64,8 @@ $theme-subtask-bg-hover:  var(--color-subtask-bg-hover);
 $theme-subtask-completed: var(--color-subtask-completed);
 $theme-dropdown-bg:       var(--color-dropdown-bg);
 $theme-dropdown-border:   var(--color-dropdown-border);
+$theme-new-column-bg:     var(--color-new-column-bg);
+$theme-new-column-hover:  var(--color-new-column-hover);
 
 $theme-scrollbar-track:   var(--scrollbar-track);
 $theme-scrollbar-thumb:   var(--scrollbar-thumb);

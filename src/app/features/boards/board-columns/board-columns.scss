@@ -1,6 +1,7 @@
 @use '../../../../assets/scss/variables' as *;
 @use '../../../../assets/scss/mixins' as *;
 @use '../../../../assets/scss/themes' as *;
+@use 'sass:color';
 
 // ==========================================================================
 // MODULAR BOARD COLUMNS CANVAS STYLES
@@ -108,7 +109,6 @@
   }
 }
 
-// Rightmost "+ New Column" Accent Panel Button
 .new-column-panel {
   width: 28rem;
   // Calculate height to subtract paddings and header line heights harmoniously
@@ -121,8 +121,8 @@
   cursor: pointer;
   @include flex-center;
   
-  // Custom Dynamic Light Theme Gradient
-  background: linear-gradient(180deg, rgba(228, 235, 250, 0.5) 0%, rgba(228, 235, 250, 0.1) 100%);
+  // Theme-aware solid background (e.g., #E4EBFA on light mode, #20212C on dark mode)
+  background-color: $theme-new-column-bg;
   @include interactive-transition(background-color, transform, opacity);
 
   .plus-text {
@@ -133,19 +133,10 @@
   }
 
   &:hover {
-    background: linear-gradient(180deg, rgba(228, 235, 250, 0.8) 0%, rgba(228, 235, 250, 0.2) 100%);
+    background-color: $theme-new-column-hover;
     
     .plus-text {
       color: $color-purple;
-    }
-  }
-
-  // Custom Dynamic Dark Theme Gradient
-  [data-theme="dark"] & {
-    background: linear-gradient(180deg, rgba(43, 44, 55, 0.5) 0%, rgba(43, 44, 55, 0.05) 100%);
-    
-    &:hover {
-      background: linear-gradient(180deg, rgba(43, 44, 55, 0.8) 0%, rgba(43, 44, 55, 0.1) 100%);
     }
   }
 
