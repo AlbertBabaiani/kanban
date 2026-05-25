@@ -36,6 +36,7 @@
           [columns]="activeBoard()!.columns"
           [tasks]="tasks()"
           (addColumn)="editActiveBoard()"
+          (addTask)="onAddTaskClick($event)"
         />
       } @else {
         <!-- Empty State (No Boards Available) -->

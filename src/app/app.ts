@@ -116,6 +116,27 @@ export class App {
     alert(`Editing board "${active.name}" (Add Board / Edit Board feature coming next!)`);
   }
 
+  protected onAddTaskClick(event: { columnId: string; status: string }): void {
+    const active = this.activeBoard();
+    if (!active) return;
+
+    const taskTitle = prompt(`Enter Task Title for column "${event.status}":`);
+    if (!taskTitle) return;
+
+    this.kanbanService.createTask(
+      active.boardId,
+      event.columnId,
+      event.status,
+      taskTitle,
+      'Created from column empty state helper',
+      [{ title: 'Subtask 1', isCompleted: false }]
+    ).then(id => {
+      console.log(`Task successfully created inside "${event.status}" column:`, id);
+    }).catch(err => {
+      console.error('Failed to create task in column:', err);
+    });
+  }
+
   protected deleteActiveBoard(): void {
     const active = this.activeBoard();
     if (!active) return;

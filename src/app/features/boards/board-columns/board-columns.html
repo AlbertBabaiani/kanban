@@ -21,6 +21,18 @@
               {{ getCompletedSubtasksCount(task) }} of {{ task.subtasks.length }} subtasks
             </p>
           </article>
+        } @empty {
+          <!-- Visual Placeholder Empty State -->
+          <div class="empty-column-state">
+            <p class="empty-column-text">This column is empty</p>
+            <button 
+              class="btn btn-secondary add-task-in-col-btn" 
+              (click)="triggerAddTask(col.columnId, col.name)"
+              aria-label="Add task to this column"
+            >
+              + Add Task
+            </button>
+          </div>
         }
       </div>
 

@@ -144,3 +144,51 @@
     border: 2px solid $color-purple;
   }
 }
+
+// Gorgeous Empty Column State Container
+.empty-column-state {
+  border: 2px dashed rgba(130, 143, 163, 0.2);
+  border-radius: $radius-lg;
+  min-height: 20rem;
+  padding: 3.2rem 1.6rem;
+  @include flex-column;
+  @include flex-center;
+  gap: 1.6rem;
+  background-color: rgba(130, 143, 163, 0.02);
+  @include interactive-transition(background-color, border-color);
+
+  &:hover {
+    background-color: rgba(130, 143, 163, 0.05);
+    border-color: rgba(99, 95, 199, 0.4); // Focus highlights in purple border on hover!
+  }
+
+  .empty-column-text {
+    font-size: 1.4rem;
+    font-weight: $font-weight-medium;
+    color: $color-medium-grey;
+    text-align: center;
+  }
+
+  .add-task-in-col-btn {
+    padding: 1rem 1.8rem;
+    font-size: 1.3rem;
+    font-weight: $font-weight-bold;
+    color: $color-purple;
+    background-color: $color-lighter-blue;
+    border-radius: $radius-full;
+    @include interactive-transition(background-color, color, transform);
+
+    &:hover {
+      background-color: color.adjust(#E4EBFA, $lightness: -4%);
+      transform: scale(1.05);
+    }
+
+    [data-theme="dark"] & {
+      background-color: $color-white;
+      
+      &:hover {
+        background-color: color.adjust($color-white, $lightness: -8%);
+      }
+    }
+  }
+}
