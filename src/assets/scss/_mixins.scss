@@ -1,0 +1,142 @@
+@use 'variables' as *;
+@use 'sass:list';
+
+// ==========================================================================
+// KANBAN REUSABLE MIXINS
+// ==========================================================================
+
+// --- Responsive Breakpoint Mixins ---
+@mixin respond-to($media) {
+  @if $media == mobile {
+    @media (max-width: #{$breakpoint-tablet - 1px}) {
+      @content;
+    }
+  }
+  @else if $media == tablet-only {
+    @media (min-width: #{$breakpoint-tablet}) and (max-width: #{$breakpoint-desktop - 1px}) {
+      @content;
+    }
+  }
+  @else if $media == tablet-up {
+    @media (min-width: #{$breakpoint-tablet}) {
+      @content;
+    }
+  }
+  @else if $media == desktop {
+    @media (min-width: #{$breakpoint-desktop}) {
+      @content;
+    }
+  }
+}
+
+// --- Typography Hierarchies ---
+@mixin heading-xl {
+  font-family: $font-family;
+  font-size: 24px;
+  font-weight: $font-weight-bold;
+  line-height: 30px;
+}
+
+@mixin heading-l {
+  font-family: $font-family;
+  font-size: 18px;
+  font-weight: $font-weight-bold;
+  line-height: 23px;
+}
+
+@mixin heading-m {
+  font-family: $font-family;
+  font-size: 15px;
+  font-weight: $font-weight-bold;
+  line-height: 19px;
+}
+
+@mixin heading-s {
+  font-family: $font-family;
+  font-size: 12px;
+  font-weight: $font-weight-bold;
+  line-height: 15px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+}
+
+@mixin body-l {
+  font-family: $font-family;
+  font-size: 13px;
+  font-weight: $font-weight-medium;
+  line-height: 23px;
+}
+
+@mixin body-m {
+  font-family: $font-family;
+  font-size: 12px;
+  font-weight: $font-weight-bold;
+  line-height: 15px;
+}
+
+// --- Flexbox Utility Mixins ---
+@mixin flex-row-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// --- Interactive Element Transition Helper ---
+@mixin interactive-transition($properties...) {
+  @if list.length($properties) == 0 {
+    transition: all $transition-normal;
+  } @else {
+    $transition-list: ();
+    @each $prop in $properties {
+      $transition-list: list.append($transition-list, $prop $transition-normal, comma);
+    }
+    transition: $transition-list;
+  }
+}
+
+// --- Custom Scrollbar Mixin ---
+@mixin custom-scrollbar($scrollbar-track, $scrollbar-thumb) {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: $scrollbar-track;
+    border-radius: $radius-full;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: $scrollbar-thumb;
+    border-radius: $radius-full;
+    border: 2px solid $scrollbar-track;
+    @include interactive-transition(background-color, filter);
+    
+    &:hover {
+      filter: brightness(1.2);
+    }
+  }
+}
+
+// --- Smooth Hover Mixin ---
+@mixin hover-state {
+  &:not(:disabled):hover {
+    @content;
+  }
+}

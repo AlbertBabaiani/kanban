@@ -1,1 +1,152 @@
-/* You can add global styles to this file, and also import other style files */
+// ==========================================================================
+// KANBAN APP GLOBAL STYLING & FOUNDATION BASELINE
+// ==========================================================================
+
+// --- Design System Imports ---
+@use './assets/scss/variables' as *;
+@use './assets/scss/mixins' as *;
+@use './assets/scss/themes' as *;
+
+// --- External Typography (Plus Jakarta Sans) ---
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+
+// --- Modern Reset & Normalize ---
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// --- Smooth Body/App Viewport Baselines ---
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: $font-family;
+  font-size: 13px;
+  line-height: 23px;
+  font-weight: $font-weight-medium;
+  background-color: $theme-bg-app;
+  color: $theme-text-primary;
+  overflow: hidden; // Prevent double scrollbars; utilize scroll within main content area
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include interactive-transition(background-color, color);
+}
+
+// --- Apply Dynamic Theme Custom Scrollbars ---
+body {
+  @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
+}
+
+// --- Typography Headings mapping to Design Guidelines ---
+h1 {
+  @include heading-xl;
+}
+
+h2 {
+  @include heading-l;
+}
+
+h3 {
+  @include heading-m;
+}
+
+h4 {
+  @include heading-s;
+}
+
+// --- Anchor Tag Baselines ---
+a {
+  color: $color-purple;
+  text-decoration: none;
+  @include interactive-transition(color);
+  
+  &:hover {
+    color: $color-purple-hover;
+  }
+}
+
+// --- Custom Button Baselines ---
+button,
+.btn {
+  font-family: $font-family;
+  font-weight: $font-weight-bold;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  border-radius: $radius-full;
+  @include interactive-transition(background-color, color, transform, opacity);
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.25;
+  }
+}
+
+// --- Form Interactive Baselines (Inputs, Textareas, Selects) ---
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  font-family: $font-family;
+  font-size: 13px;
+  line-height: 23px;
+  font-weight: $font-weight-medium;
+  color: $theme-text-primary;
+  background-color: transparent;
+  border: 1px solid $theme-dropdown-border;
+  border-radius: $radius-sm;
+  padding: 8px 16px;
+  outline: none;
+  @include interactive-transition(border-color);
+  
+  &::placeholder {
+    color: $color-medium-grey;
+    opacity: 0.5;
+  }
+  
+  &:hover:not(:focus) {
+    border-color: $color-purple;
+  }
+  
+  &:focus {
+    border-color: $color-purple;
+  }
+  
+  &.input-error {
+    border-color: $color-red;
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 112px;
+}
+
+// --- Dynamic Subtask Row Styling Utilities ---
+.subtask-item {
+  @include flex-row-center;
+  background-color: $theme-subtask-bg;
+  border-radius: $radius-sm;
+  padding: 12px;
+  cursor: pointer;
+  @include interactive-transition(background-color);
+  
+  &:hover {
+    background-color: $theme-subtask-bg-hover;
+  }
+  
+  &.completed {
+    span {
+      color: $theme-subtask-completed;
+      text-decoration: line-through;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+// ==========================================================================
+// KANBAN SYSTEM DESIGN TOKENS & VARIABLES
+// ==========================================================================
+
+// --- Color Palette ---
+$color-purple:          #635FC7;
+$color-purple-hover:    #A8A4FF;
+$color-red:             #EA5555;
+$color-red-hover:       #FF9898;
+
+// Dark Theme Colors
+$color-very-dark-blue:  #000112; // App background
+$color-dark-grey:       #20212C; // Board container & side panel
+$color-darker-grey:     #2B2C37; // Header & card components
+$color-lines-dark:      #3E3F4E; // Borders & custom scrollbars
+
+// Light Theme Colors
+$color-white:           #FFFFFF; // App main white
+$color-light-grey:      #F4F7FD; // App light background
+$color-lighter-blue:    #E4EBFA; // Light theme hover & borders
+
+// Neutral/Structural Colors
+$color-medium-grey:     #828FA3; // Subtext & helper states
+
+// --- Typography ---
+$font-family: 'Plus Jakarta Sans', sans-serif;
+
+// Font Weights
+$font-weight-medium: 500;
+$font-weight-bold:   700;
+
+// --- Responsive Breakpoints ---
+$breakpoint-mobile:  375px;
+$breakpoint-tablet:  768px;
+$breakpoint-desktop: 1440px;
+
+// --- Layout Configurations ---
+$sidebar-width-desktop: 300px;
+$sidebar-width-tablet:  260px;
+$header-height-desktop: 96px;
+$header-height-mobile:  64px;
+
+// --- Interaction / Transition Defaults ---
+$transition-fast:   0.15s ease-in-out;
+$transition-normal: 0.25s ease-in-out;
+$transition-slow:   0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+// --- Border Radius Defaults ---
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 20px;
+$radius-full: 100px;
+
+// --- Shadows ---
+$shadow-light: 0 4px 6px rgba(54, 78, 126, 0.1015);
+$shadow-dark:  0 4px 6px rgba(0, 0, 0, 0.25);

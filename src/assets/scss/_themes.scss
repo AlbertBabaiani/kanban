@@ -1,0 +1,65 @@
+@use 'variables' as *;
+
+// ==========================================================================
+// KANBAN THEME CONFIGURATIONS (LIGHT/DARK)
+// ==========================================================================
+
+:root {
+  // Light Theme Configuration (Default)
+  --color-bg-app:            #{$color-light-grey};
+  --color-bg-surface:        #{$color-white};
+  --color-border:            #{$color-lighter-blue};
+  --color-text-primary:      #{$color-very-dark-blue};
+  --color-text-secondary:    #{$color-medium-grey};
+  --color-shadow:            #{$shadow-light};
+  
+  // Custom Card & Form Overrides
+  --color-subtask-bg:        #{$color-light-grey};
+  --color-subtask-bg-hover:  #{$color-lighter-blue};
+  --color-subtask-completed: #{$color-medium-grey};
+  --color-dropdown-bg:       #{$color-white};
+  --color-dropdown-border:   rgba(130, 143, 163, 0.25);
+  
+  // Scrollbars
+  --scrollbar-track:         #{$color-light-grey};
+  --scrollbar-thumb:         #{$color-lighter-blue};
+}
+
+[data-theme="dark"] {
+  // Dark Theme Configuration
+  --color-bg-app:            #{$color-very-dark-blue};
+  --color-bg-surface:        #{$color-darker-grey};
+  --color-border:            #{$color-lines-dark};
+  --color-text-primary:      #{$color-white};
+  --color-text-secondary:    #{$color-medium-grey};
+  --color-shadow:            #{$shadow-dark};
+  
+  // Custom Card & Form Overrides
+  --color-subtask-bg:        #{$color-very-dark-blue};
+  --color-subtask-bg-hover:  #{$color-lines-dark};
+  --color-subtask-completed: rgba(255, 255, 255, 0.5);
+  --color-dropdown-bg:       #{$color-dark-grey};
+  --color-dropdown-border:   #{$color-lines-dark};
+  
+  // Scrollbars
+  --scrollbar-track:         #{$color-darker-grey};
+  --scrollbar-thumb:         #{$color-lines-dark};
+}
+
+// --- Semantic Theme SCSS Variable Mapping ---
+// These allow standard SCSS usage referencing the dynamic CSS Custom Properties.
+$theme-bg-app:            var(--color-bg-app);
+$theme-bg-surface:        var(--color-bg-surface);
+$theme-border:            var(--color-border);
+$theme-text-primary:      var(--color-text-primary);
+$theme-text-secondary:    var(--color-text-secondary);
+$theme-shadow:            var(--color-shadow);
+
+$theme-subtask-bg:        var(--color-subtask-bg);
+$theme-subtask-bg-hover:  var(--color-subtask-bg-hover);
+$theme-subtask-completed: var(--color-subtask-completed);
+$theme-dropdown-bg:       var(--color-dropdown-bg);
+$theme-dropdown-border:   var(--color-dropdown-border);
+
+$theme-scrollbar-track:   var(--scrollbar-track);
+$theme-scrollbar-thumb:   var(--scrollbar-thumb);
