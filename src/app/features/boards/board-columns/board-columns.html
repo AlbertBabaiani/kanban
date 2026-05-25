@@ -22,13 +22,21 @@
             </p>
           </article>
         } @empty {
-          <!-- Visual Placeholder Empty State -->
-          <div class="empty-column-state">
+          <!-- Visual Placeholder Empty State (Clickable Card) -->
+          <div 
+            class="empty-column-state" 
+            (click)="triggerAddTask(col.columnId, col.name)"
+            (keydown.enter)="triggerAddTask(col.columnId, col.name)"
+            (keydown.space)="triggerAddTask(col.columnId, col.name)"
+            role="button"
+            tabindex="0"
+            aria-label="Add task to this column"
+          >
             <p class="empty-column-text">This column is empty</p>
             <button 
               class="btn btn-secondary add-task-in-col-btn" 
-              (click)="triggerAddTask(col.columnId, col.name)"
-              aria-label="Add task to this column"
+              tabindex="-1"
+              aria-hidden="true"
             >
               + Add Task
             </button>

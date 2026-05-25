@@ -121,23 +121,21 @@
           </li>
         </ul>
 
-        <!-- Toggler in mobile menu -->
+        <!-- Toggler in mobile menu (Clickable Box) -->
         <div class="sidebar-footer">
-          <div class="theme-toggler-box">
+          <div 
+            class="theme-toggler-box" 
+            (click)="toggleTheme()"
+            (keydown.enter)="toggleTheme()"
+            (keydown.space)="toggleTheme()"
+            role="button"
+            tabindex="0"
+            aria-label="Toggle dark theme mode"
+          >
             <img src="icons/icon-light-theme.svg" alt="Light theme" class="icon-theme" />
-            <label
-              class="switch-toggle"
-              for="themeTogglerMobile"
-              aria-label="Toggle dark theme mode"
-            >
-              <input
-                type="checkbox"
-                id="themeTogglerMobile"
-                [checked]="theme() === 'dark'"
-                (change)="toggleTheme()"
-              />
-              <span class="switch-slider"></span>
-            </label>
+            <div class="switch-toggle" aria-hidden="true">
+              <span class="switch-slider" [class.checked]="theme() === 'dark'"></span>
+            </div>
             <img src="icons/icon-dark-theme.svg" alt="Dark theme" class="icon-theme" />
           </div>
         </div>

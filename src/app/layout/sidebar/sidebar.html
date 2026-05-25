@@ -45,21 +45,23 @@
 
   <!-- Bottom Actions Container -->
   <div class="sidebar-footer">
-    <!-- Theme Switcher Toggler -->
-    <div class="theme-toggler-box">
+    <!-- Theme Switcher Toggler (Clickable Box) -->
+    <div 
+      class="theme-toggler-box" 
+      (click)="triggerToggleTheme()"
+      (keydown.enter)="triggerToggleTheme()"
+      (keydown.space)="triggerToggleTheme()"
+      role="button"
+      tabindex="0"
+      aria-label="Toggle dark theme mode"
+    >
       <!-- Light Theme Icon -->
       <img src="icons/icon-light-theme.svg" alt="Light theme" class="icon-theme" />
 
-      <!-- Toggle Switch -->
-      <label class="switch-toggle" for="themeToggler" aria-label="Toggle dark theme mode">
-        <input
-          type="checkbox"
-          id="themeToggler"
-          [checked]="theme() === 'dark'"
-          (change)="triggerToggleTheme()"
-        />
-        <span class="switch-slider"></span>
-      </label>
+      <!-- Toggle Switch Visual -->
+      <div class="switch-toggle" aria-hidden="true">
+        <span class="switch-slider" [class.checked]="theme() === 'dark'"></span>
+      </div>
 
       <!-- Dark Theme Icon -->
       <img src="icons/icon-dark-theme.svg" alt="Dark theme" class="icon-theme" />

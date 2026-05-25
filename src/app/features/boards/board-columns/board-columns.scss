@@ -155,11 +155,18 @@
   @include flex-center;
   gap: 1.6rem;
   background-color: rgba(130, 143, 163, 0.02);
+  cursor: pointer;
+  outline: none;
   @include interactive-transition(background-color, border-color);
 
   &:hover {
     background-color: rgba(130, 143, 163, 0.05);
     border-color: rgba(99, 95, 199, 0.4); // Focus highlights in purple border on hover!
+  }
+
+  &:focus-visible {
+    border-color: $color-purple;
+    background-color: rgba(99, 95, 199, 0.05);
   }
 
   .empty-column-text {
