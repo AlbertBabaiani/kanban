@@ -1,16 +1,17 @@
 import { Component, signal, computed, effect, inject } from '@angular/core';
 import { KanbanService } from './core/services/kanban-service';
-import { Board } from './core/models/kanban.model';
+import { Board, BoardColumn } from './core/models/kanban.model';
 import { Sidebar } from './layout/sidebar/sidebar';
 import { Header } from './layout/header/header';
 import { AddBoard } from './features/boards/add-board/add-board';
 import { BoardColumns } from './features/boards/board-columns/board-columns';
 import { DeleteBoard } from './features/boards/delete-board/delete-board';
+import { EditBoard } from './features/boards/edit-board/edit-board';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -24,6 +25,7 @@ export class App {
   protected readonly isMobileMenuOpen = signal<boolean>(false);
   protected readonly isAddBoardOpen = signal<boolean>(false);
   protected readonly isDeleteBoardOpen = signal<boolean>(false);
+  protected readonly isEditBoardOpen = signal<boolean>(false);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -112,10 +114,29 @@ export class App {
     });
   }
 
-  protected editActiveBoard(): void {
+  // --- Board Editing Modal Handlers ---
+  protected openEditBoardModal(): void {
+    this.isEditBoardOpen.set(true);
+    this.isMobileMenuOpen.set(false); // Close mobile switcher menu
+  }
+
+  protected closeEditBoardModal(): void {
+    this.isEditBoardOpen.set(false);
+  }
+
+  protected onBoardEditSubmit(event: { name: string; columns: BoardColumn[] }): void {
     const active = this.activeBoard();
     if (!active) return;
-    alert(`Editing board "${active.name}" (Add Board / Edit Board feature coming next!)`);
+
+    this.kanbanService.updateBoard(active.boardId, {
+      name: event.name,
+      columns: event.columns
+    }).then(() => {
+      this.isEditBoardOpen.set(false); // Close modal
+      console.log('Board successfully updated.');
+    }).catch(err => {
+      console.error('Failed to update board:', err);
+    });
   }
 
   protected onAddTaskClick(event: { columnId: string; status: string }): void {

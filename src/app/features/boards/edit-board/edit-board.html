@@ -1,0 +1,95 @@
+<div class="modal-backdrop" (click)="triggerClose()" role="presentation">
+  <div class="modal-content" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="editBoardModalTitle">
+    
+    <!-- Modal Title -->
+    <h3 id="editBoardModalTitle" class="modal-title">Edit Board</h3>
+
+    <!-- Board Name Form Group -->
+    <div class="form-group">
+      <label class="form-label" for="boardNameInput">Board Name</label>
+      <div class="input-container">
+        <input 
+          type="text" 
+          id="boardNameInput"
+          #boardNameInputRef
+          #boardInput
+          placeholder="e.g. Platform Launch" 
+          [value]="boardName()"
+          (input)="onNameInput(boardInput.value)"
+          [class.input-error]="showErrors() && boardName().trim() === ''"
+        />
+        @if (showErrors() && boardName().trim() === '') {
+          <span class="error-msg">Can't be empty</span>
+        }
+      </div>
+    </div>
+
+    <!-- Board Columns Form Group -->
+    <div class="form-group">
+      <label class="form-label">Board Columns</label>
+      
+      <div class="columns-builder-list">
+        @for (col of columns(); track col.columnId; let index = $index) {
+          <div class="column-input-row">
+            
+            <!-- Column Accent Color Picker -->
+            <div class="color-dot-container" [style.background-color]="col.color" title="Choose column color accent">
+              <input 
+                type="color" 
+                class="hidden-color-input"
+                #colorPicker
+                [value]="col.color"
+                (input)="updateColumnColor(index, colorPicker.value)"
+              />
+            </div>
+
+            <!-- Column Name Input -->
+            <div class="input-container flex-grow">
+              <input 
+                type="text" 
+                #colInput
+                placeholder="e.g. Todo" 
+                [value]="col.name"
+                (input)="updateColumnName(index, colInput.value)"
+                [class.input-error]="showErrors() && col.name.trim() === ''"
+              />
+              @if (showErrors() && col.name.trim() === '') {
+                <span class="error-msg">Can't be empty</span>
+              }
+            </div>
+
+            <!-- Remove Row Action Button -->
+            <button 
+              class="remove-col-btn" 
+              (click)="removeColumn(index)" 
+              aria-label="Remove column row"
+            >
+              <img src="icons/icon-cross.svg" alt="Remove" />
+            </button>
+
+          </div>
+        }
+      </div>
+
+      <!-- Add New Column Row Primary Action -->
+      <button 
+        class="btn btn-secondary add-col-btn" 
+        (click)="addColumn()"
+        aria-label="Add new column row"
+      >
+        + Add New Column
+      </button>
+    </div>
+
+    <!-- Submit Board Update CTA -->
+    <button 
+      class="btn btn-primary submit-board-btn" 
+      [disabled]="columns().length === 0"
+      (click)="triggerSubmit()"
+      aria-label="Save board changes"
+    >
+      Save Changes
+    </button>
+
+  </div>
+</div>

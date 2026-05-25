@@ -8,7 +8,7 @@
     [theme]="theme()"
     (toggleMobileMenu)="toggleMobileMenu()"
     (createTask)="demoTaskCreate()"
-    (editBoard)="editActiveBoard()"
+    (editBoard)="openEditBoardModal()"
     (deleteBoard)="openDeleteBoardModal()"
   />
 
@@ -35,7 +35,7 @@
         <app-board-columns
           [columns]="activeBoard()!.columns"
           [tasks]="tasks()"
-          (addColumn)="editActiveBoard()"
+          (addColumn)="openEditBoardModal()"
           (addTask)="onAddTaskClick($event)"
         />
       } @else {
@@ -163,6 +163,17 @@
       [boardName]="activeBoard()!.name"
       (close)="closeDeleteBoardModal()"
       (confirm)="onBoardDeleteConfirm()"
+    />
+  }
+
+  <!-- ==========================================================================
+       7. BOARD EDITING DIALOG MODAL (EDIT BOARD OVERLAY)
+       ========================================================================== -->
+  @if (isEditBoardOpen() && activeBoard()) {
+    <app-edit-board
+      [activeBoard]="activeBoard()!"
+      (close)="closeEditBoardModal()"
+      (submit)="onBoardEditSubmit($event)"
     />
   }
 
