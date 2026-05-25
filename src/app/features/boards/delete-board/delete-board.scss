@@ -1,0 +1,126 @@
+@use '../../../../assets/scss/variables' as *;
+@use '../../../../assets/scss/mixins' as *;
+@use '../../../../assets/scss/themes' as *;
+@use 'sass:color';
+
+// ==========================================================================
+// DELETE BOARD MODAL SYSTEM STYLES
+// ==========================================================================
+
+:host {
+  display: block;
+}
+
+// Full-screen Glassmorphic Backdrop
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(0.4rem);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+  animation: modalFadeIn 0.2s ease-out forwards;
+}
+
+// Centered Dialog Frame
+.modal-content {
+  background-color: $theme-bg-surface;
+  width: 100%;
+  max-width: 48rem;
+  padding: 3.2rem;
+  border-radius: $radius-lg;
+  box-shadow: $theme-shadow;
+  @include flex-column;
+  gap: 2.4rem;
+  @include interactive-transition(background-color, box-shadow);
+  animation: modalSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @include respond-to(mobile) {
+    padding: 2.4rem;
+    gap: 2.4rem;
+  }
+
+  // Red alert title
+  .modal-title {
+    @include heading-l;
+    color: $color-red;
+  }
+
+  // Warning description paragraph details
+  .modal-description {
+    font-size: 1.3rem;
+    line-height: 2.3rem;
+    font-weight: $font-weight-medium;
+    color: $color-medium-grey;
+  }
+}
+
+// Action Button Container
+.modal-actions-row {
+  display: flex;
+  gap: 1.6rem;
+  width: 100%;
+
+  @include respond-to(mobile) {
+    flex-direction: column; // Side-by-side on desktop/tablet, stacked on very small screens if they overflow
+    gap: 1.2rem;
+  }
+
+  // Both buttons share equal width footprint
+  .btn {
+    flex: 1;
+    padding: 1.2rem 2.4rem;
+    font-size: 1.3rem;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-full;
+    @include flex-center;
+  }
+
+  // Solid Destructive Red button
+  .delete-btn {
+    background-color: $color-red;
+    color: $color-white;
+
+    &:hover:not(:disabled) {
+      background-color: $color-red-hover;
+    }
+  }
+
+  // Solid Light Grey/White Cancel button
+  .cancel-btn {
+    background-color: $color-lighter-blue;
+    color: $color-purple;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(#E4EBFA, $lightness: -4%);
+    }
+
+    [data-theme="dark"] & {
+      background-color: $color-white;
+      color: $color-purple;
+
+      &:hover:not(:disabled) {
+        background-color: color.adjust($color-white, $lightness: -8%);
+      }
+    }
+  }
+}
+
+// ==========================================================================
+// ANIMATIONS
+// ==========================================================================
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(2rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

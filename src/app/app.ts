@@ -5,11 +5,12 @@ import { Sidebar } from './layout/sidebar/sidebar';
 import { Header } from './layout/header/header';
 import { AddBoard } from './features/boards/add-board/add-board';
 import { BoardColumns } from './features/boards/board-columns/board-columns';
+import { DeleteBoard } from './features/boards/delete-board/delete-board';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -22,6 +23,7 @@ export class App {
   protected readonly theme = signal<'light' | 'dark'>('light');
   protected readonly isMobileMenuOpen = signal<boolean>(false);
   protected readonly isAddBoardOpen = signal<boolean>(false);
+  protected readonly isDeleteBoardOpen = signal<boolean>(false);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -137,18 +139,26 @@ export class App {
     });
   }
 
-  protected deleteActiveBoard(): void {
+  // --- Board Deletion Modal Handlers ---
+  protected openDeleteBoardModal(): void {
+    this.isDeleteBoardOpen.set(true);
+  }
+
+  protected closeDeleteBoardModal(): void {
+    this.isDeleteBoardOpen.set(false);
+  }
+
+  protected onBoardDeleteConfirm(): void {
     const active = this.activeBoard();
     if (!active) return;
-    
-    if (confirm(`Are you absolutely sure you want to delete board "${active.name}" and all of its tasks? This action is permanent.`)) {
-      this.kanbanService.deleteBoard(active.boardId)
-        .then(() => {
-          console.log('Board successfully deleted.');
-        })
-        .catch(err => {
-          console.error('Failed to delete board:', err);
-        });
-    }
+
+    this.kanbanService.deleteBoard(active.boardId)
+      .then(() => {
+        this.isDeleteBoardOpen.set(false); // Close modal
+        console.log('Board successfully deleted.');
+      })
+      .catch(err => {
+        console.error('Failed to delete board:', err);
+      });
   }
 }

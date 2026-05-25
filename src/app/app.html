@@ -9,7 +9,7 @@
     (toggleMobileMenu)="toggleMobileMenu()"
     (createTask)="demoTaskCreate()"
     (editBoard)="editActiveBoard()"
-    (deleteBoard)="deleteActiveBoard()"
+    (deleteBoard)="openDeleteBoardModal()"
   />
 
   <!-- ==========================================================================
@@ -152,6 +152,17 @@
     <app-add-board
       (close)="closeAddBoardModal()"
       (submit)="onBoardSubmit($event)"
+    />
+  }
+
+  <!-- ==========================================================================
+       6. BOARD DELETION CONFIRMATION DIALOG MODAL (DELETE BOARD OVERLAY)
+       ========================================================================== -->
+  @if (isDeleteBoardOpen() && activeBoard()) {
+    <app-delete-board
+      [boardName]="activeBoard()!.name"
+      (close)="closeDeleteBoardModal()"
+      (confirm)="onBoardDeleteConfirm()"
     />
   }
 
