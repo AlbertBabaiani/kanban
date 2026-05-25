@@ -43,6 +43,7 @@
     @include flex-row-center;
     gap: 0.8rem;
     overflow: hidden;
+    margin-right: auto;
 
     .header-board-title {
       @include heading-xl;
@@ -134,5 +135,96 @@
         background-color: $theme-subtask-bg-hover;
       }
     }
+  }
+
+  // Brand Logo Column (Visible on Desktop / Tablet)
+  .header-logo-desktop {
+    width: $sidebar-width-desktop;
+    height: 100%;
+    @include flex-row-center;
+    justify-content: flex-start;
+    padding-left: 3.2rem;
+    border-right: 1px solid $theme-border;
+    margin-left: -3.2rem; // Negates header padding to sit flush on left edge
+    margin-right: 3.2rem;
+    flex-shrink: 0;
+    @include interactive-transition(border-color);
+
+    .brand-logo {
+      height: 2.6rem;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    @include respond-to(tablet-only) {
+      width: $sidebar-width-tablet;
+      padding-left: 2.4rem;
+      margin-left: -3.2rem;
+      margin-right: 2.4rem;
+    }
+
+    @include respond-to(mobile) {
+      display: none !important; // Hidden on mobile sizes
+    }
+  }
+
+  // Options Dropdown System
+  .options-menu-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .options-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 1.6rem;
+    z-index: 100;
+    width: 19.2rem;
+    background-color: $theme-dropdown-bg;
+    border: 1px solid $theme-dropdown-border;
+    border-radius: $radius-md;
+    box-shadow: $theme-shadow;
+    padding: 0.8rem 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+    .dropdown-item {
+      width: 100%;
+      padding: 1.2rem 2.4rem;
+      font-size: 1.3rem;
+      font-weight: $font-weight-medium;
+      color: $color-medium-grey;
+      text-align: left;
+      border-radius: 0;
+      @include interactive-transition(background-color, color);
+
+      &:hover:not(:disabled) {
+        background-color: $theme-subtask-bg-hover;
+        color: $theme-text-primary;
+      }
+
+      &.destructive {
+        color: $color-red;
+
+        &:hover:not(:disabled) {
+          background-color: $theme-subtask-bg-hover;
+          color: $color-red-hover;
+        }
+      }
+    }
+  }
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.8rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

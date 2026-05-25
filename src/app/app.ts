@@ -89,7 +89,6 @@ export class App {
       });
   }
 
-  // --- Temporary Demo CRUD Helpers ---
   protected demoTaskCreate(): void {
     const active = this.activeBoard();
     if (!active || active.columns.length === 0) return;
@@ -111,14 +110,24 @@ export class App {
     });
   }
 
-  protected demoOptionsClick(): void {
+  protected editActiveBoard(): void {
+    const active = this.activeBoard();
+    if (!active) return;
+    alert(`Editing board "${active.name}" (Add Board / Edit Board feature coming next!)`);
+  }
+
+  protected deleteActiveBoard(): void {
     const active = this.activeBoard();
     if (!active) return;
     
-    if (confirm(`Do you want to DELETE board "${active.name}"?`)) {
+    if (confirm(`Are you absolutely sure you want to delete board "${active.name}" and all of its tasks? This action is permanent.`)) {
       this.kanbanService.deleteBoard(active.boardId)
-        .then(() => console.log('Board deleted.'))
-        .catch(err => console.error(err));
+        .then(() => {
+          console.log('Board successfully deleted.');
+        })
+        .catch(err => {
+          console.error('Failed to delete board:', err);
+        });
     }
   }
 }

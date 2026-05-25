@@ -1,7 +1,16 @@
 <header class="app-top-header">
+  <!-- Brand Logo Column (Visible on Desktop / Tablet) -->
+  <div class="header-logo-desktop">
+    <img 
+      [src]="theme() === 'dark' ? 'icons/logo-light.svg' : 'icons/logo-dark.svg'" 
+      alt="Kanban Logo" 
+      class="brand-logo" 
+    />
+  </div>
+
   <!-- Responsive Mobile Logo -->
   <div class="header-logo-mobile">
-    <img src="assets/icons/logo-mobile.svg" alt="Kanban Logo" class="mobile-logo-pills" />
+    <img src="icons/logo-mobile.svg" alt="Kanban Logo" class="mobile-logo-pills" />
   </div>
 
   <!-- Active Board Name / Dropdown Trigger (Mobile Responsive) -->
@@ -14,7 +23,7 @@
       aria-label="Toggle boards switcher menu"
     >
       <img 
-        src="assets/icons/icon-chevron-down.svg" 
+        src="icons/icon-chevron-down.svg" 
         alt="" 
         class="icon-chevron" 
         [class.rotated]="isMobileMenuOpen()" 
@@ -33,18 +42,27 @@
       aria-label="Add new task card"
     >
       <!-- Plus Icon on Desktop/Mobile -->
-      <img src="assets/icons/icon-add-task-mobile.svg" alt="" class="icon-plus-mobile" aria-hidden="true" />
+      <img src="icons/icon-add-task-mobile.svg" alt="" class="icon-plus-mobile" aria-hidden="true" />
       <span class="btn-text">Add New Task</span>
     </button>
 
-    <!-- Vertical Menu Options Ellipsis -->
-    <button 
-      class="header-options-btn" 
-      [disabled]="!activeBoard()" 
-      (click)="triggerBoardOptions()"
-      aria-label="Board options menu"
-    >
-      <img src="assets/icons/icon-vertical-ellipsis.svg" alt="Options" class="icon-options" />
-    </button>
+    <!-- Vertical Menu Options Ellipsis with Dropdown Menu -->
+    <div class="options-menu-container">
+      <button 
+        class="header-options-btn" 
+        [disabled]="!activeBoard()" 
+        (click)="toggleOptionsMenu($event)"
+        aria-label="Board options menu"
+      >
+        <img src="icons/icon-vertical-ellipsis.svg" alt="Options" class="icon-options" />
+      </button>
+
+      @if (isOptionsMenuOpen()) {
+        <div class="options-dropdown" (click)="$event.stopPropagation()" role="menu">
+          <button class="dropdown-item" (click)="triggerEditBoard()" role="menuitem">Edit Board</button>
+          <button class="dropdown-item destructive" (click)="triggerDeleteBoard()" role="menuitem">Delete Board</button>
+        </div>
+      }
+    </div>
   </div>
 </header>

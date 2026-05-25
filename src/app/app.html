@@ -1,44 +1,48 @@
 <div class="app-layout" [class.sidebar-closed]="!isSidebarOpen()">
-  // ==========================================================================
-  // 1. MODULAR NAVIGATION SIDEBAR (DESKTOP / TABLET)
-  // ==========================================================================
-  <app-sidebar
-    [boards]="boards()"
+  <!-- ==========================================================================
+       1. TOP HEADER (STRETCHED TO 100% WIDTH)
+       ========================================================================== -->
+  <app-header
     [activeBoard]="activeBoard()"
+    [isMobileMenuOpen]="isMobileMenuOpen()"
     [theme]="theme()"
-    (toggleSidebar)="toggleSidebar()"
-    (toggleTheme)="toggleTheme()"
-    (selectBoard)="selectBoard($event)"
-    (createBoard)="openAddBoardModal()"
+    (toggleMobileMenu)="toggleMobileMenu()"
+    (createTask)="demoTaskCreate()"
+    (editBoard)="editActiveBoard()"
+    (deleteBoard)="deleteActiveBoard()"
   />
 
-  // ==========================================================================
-  // 2. MAIN VIEWPORT & HEADER COMPONENT
-  // ==========================================================================
-  <div class="main-layout-viewport">
-    <!-- TOP HEADER -->
-    <app-header
+  <!-- ==========================================================================
+       2. APP BODY WRAPPER (SIDEBAR & BOARD CANVAS)
+       ========================================================================== -->
+  <div class="app-body-container">
+    <!-- MODULAR NAVIGATION SIDEBAR (DESKTOP / TABLET) -->
+    <app-sidebar
+      [boards]="boards()"
       [activeBoard]="activeBoard()"
-      [isMobileMenuOpen]="isMobileMenuOpen()"
-      (toggleMobileMenu)="toggleMobileMenu()"
-      (createTask)="demoTaskCreate()"
-      (boardOptions)="demoOptionsClick()"
+      [theme]="theme()"
+      (toggleSidebar)="toggleSidebar()"
+      (toggleTheme)="toggleTheme()"
+      (selectBoard)="selectBoard($event)"
+      (createBoard)="openAddBoardModal()"
     />
 
-    <!-- BOARD CANVAS VIEWPORT -->
-    <main class="board-canvas-wrapper">
+    <!-- MAIN VIEWPORT & BOARD CANVAS -->
+    <div class="main-layout-viewport">
+      <!-- BOARD CANVAS VIEWPORT -->
+      <main class="board-canvas-wrapper">
       @if (activeBoard()) {
         <app-board-columns
           [columns]="activeBoard()!.columns"
           [tasks]="tasks()"
-          (addColumn)="demoOptionsClick()"
+          (addColumn)="editActiveBoard()"
         />
       } @else {
         <!-- Empty State (No Boards Available) -->
         <div class="empty-boards-canvas">
           <div class="empty-state-card">
             <img
-              src="assets/icons/icon-board.svg"
+              src="icons/icon-board.svg"
               alt=""
               class="icon-empty-board"
               aria-hidden="true"
@@ -55,10 +59,11 @@
       }
     </main>
   </div>
+</div>
 
-  // ==========================================================================
-  // 3. FLOATING EYE-ICON BUTTON (SHOW SIDEBAR)
-  // ==========================================================================
+  <!-- ==========================================================================
+       3. FLOATING EYE-ICON BUTTON (SHOW SIDEBAR)
+       ========================================================================== -->
   <button
     class="floating-show-sidebar-btn"
     [class.visible]="!isSidebarOpen()"
@@ -68,9 +73,9 @@
     <img src="icons/icon-show-sidebar.svg" alt="" aria-hidden="true" />
   </button>
 
-  // ==========================================================================
-  // 4. MOBILE BOARD SELECTOR MODAL / DROP-DOWN OVERLAY
-  // ==========================================================================
+  <!-- ==========================================================================
+       4. MOBILE BOARD SELECTOR MODAL / DROP-DOWN OVERLAY
+       ========================================================================== -->
   @if (isMobileMenuOpen()) {
     <div class="mobile-menu-backdrop" (click)="toggleMobileMenu()" role="presentation">
       <div
@@ -91,7 +96,7 @@
                 (click)="selectBoard(board)"
               >
                 <img
-                  src="assets/icons/icon-board.svg"
+                  src="icons/icon-board.svg"
                   alt=""
                   class="icon-board"
                   aria-hidden="true"
@@ -105,7 +110,7 @@
           <li>
             <button class="board-nav-btn create-board-btn" (click)="openAddBoardModal()">
               <img
-                src="assets/icons/icon-board.svg"
+                src="icons/icon-board.svg"
                 alt=""
                 class="icon-board icon-purple-filter"
                 aria-hidden="true"
@@ -118,7 +123,7 @@
         <!-- Toggler in mobile menu -->
         <div class="sidebar-footer">
           <div class="theme-toggler-box">
-            <img src="assets/icons/icon-light-theme.svg" alt="Light theme" class="icon-theme" />
+            <img src="icons/icon-light-theme.svg" alt="Light theme" class="icon-theme" />
             <label
               class="switch-toggle"
               for="themeTogglerMobile"
@@ -132,16 +137,16 @@
               />
               <span class="switch-slider"></span>
             </label>
-            <img src="assets/icons/icon-dark-theme.svg" alt="Dark theme" class="icon-theme" />
+            <img src="icons/icon-dark-theme.svg" alt="Dark theme" class="icon-theme" />
           </div>
         </div>
       </div>
     </div>
   }
 
-  // ==========================================================================
-  // 5. DYNAMIC BOARD CREATION DIALOG MODAL (ADD BOARD OVERLAY)
-  // ==========================================================================
+  <!-- ==========================================================================
+       5. DYNAMIC BOARD CREATION DIALOG MODAL (ADD BOARD OVERLAY)
+       ========================================================================== -->
   @if (isAddBoardOpen()) {
     <app-add-board
       (close)="closeAddBoardModal()"

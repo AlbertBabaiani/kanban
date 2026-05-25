@@ -8,17 +8,34 @@
 
 .app-layout {
   display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   position: relative;
 }
 
+// --- Body Layout Container wrapping Sidebar & Viewport ---
+.app-body-container {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - #{$header-height-desktop});
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  @include respond-to(mobile) {
+    height: calc(100vh - #{$header-height-mobile});
+  }
+}
+
 // --- Main Scroll Canvas Viewport ---
 .main-layout-viewport {
   flex: 1;
+  width: 0;
+  min-width: 0;
   @include flex-column;
-  height: 100vh;
+  height: 100%;
   margin-left: $sidebar-width-desktop;
   background-color: $theme-bg-app;
   @include interactive-transition(margin-left, background-color);
@@ -363,10 +380,11 @@
 // 6. COMPONENT SELECTOR STRUCTURAL ANCHORINGS
 // ==========================================================================
 app-sidebar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
+  bottom: 0;
+  height: 100%;
   z-index: 10;
   @include interactive-transition(transform);
   
@@ -376,7 +394,9 @@ app-sidebar {
 }
 
 app-header {
-  @include flex-row-center;
+  display: block;
+  width: 100%;
+  z-index: 11; // Ensure header border sits on top of sidebar absolute positioning if they meet
 }
 
 // ==========================================================================

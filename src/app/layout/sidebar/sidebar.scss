@@ -23,17 +23,9 @@
     width: $sidebar-width-tablet;
   }
 
-  // Sidebar Header / Logo area
+  // Sidebar Header / Logo area (Disabled in favor of top-header logo)
   .sidebar-logo-container {
-    height: $header-height-desktop;
-    @include flex-row-center;
-    padding-left: 3.2rem;
-    
-    .brand-logo {
-      height: 2.6rem;
-      max-width: 100%;
-      object-fit: contain;
-    }
+    display: none !important;
   }
 
   // Navigation Panel
