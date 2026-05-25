@@ -11,13 +11,13 @@ import {
   writeBatch,
   getDocs,
   serverTimestamp,
-  Firestore
+  Firestore,
 } from 'firebase/firestore';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService } from './firebase-service';
 import { Board, BoardColumn, Task, Subtask } from '../models/kanban.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class KanbanService {
   private readonly db: Firestore;
@@ -41,7 +41,7 @@ export class KanbanService {
     // Automatically manage task subscriptions whenever the active board selection changes
     effect(() => {
       const active = this.activeBoard();
-      
+
       // Unsubscribe from previous tasks
       if (this.tasksUnsubscribe) {
         this.tasksUnsubscribe();
@@ -65,22 +65,22 @@ export class KanbanService {
    */
   public subscribeToBoards(userId: string): void {
     if (this.currentUserId === userId && this.boardsUnsubscribe) return;
-    
+
     this.unsubscribeAll();
     this.currentUserId = userId;
 
-    const q = query(
-      collection(this.db, 'boards'),
-      where('userId', '==', userId)
-    );
+    const q = query(collection(this.db, 'boards'), where('userId', '==', userId));
 
     this.boardsUnsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const boardsList = snapshot.docs.map((docSnap) => ({
-          boardId: docSnap.id,
-          ...docSnap.data()
-        } as Board));
+        const boardsList = snapshot.docs.map(
+          (docSnap) =>
+            ({
+              boardId: docSnap.id,
+              ...docSnap.data(),
+            }) as Board,
+        );
 
         this.boards.set(boardsList);
 
@@ -99,7 +99,7 @@ export class KanbanService {
       },
       (error) => {
         console.error('Firestore Boards subscription failed:', error);
-      }
+      },
     );
   }
 
@@ -108,18 +108,18 @@ export class KanbanService {
    * Auto-managed by the effect tracking activeBoard().
    */
   private subscribeToTasks(boardId: string): void {
-    const q = query(
-      collection(this.db, 'tasks'),
-      where('boardId', '==', boardId)
-    );
+    const q = query(collection(this.db, 'tasks'), where('boardId', '==', boardId));
 
     this.tasksUnsubscribe = onSnapshot(
       q,
       (snapshot) => {
-        const tasksList = snapshot.docs.map((docSnap) => ({
-          taskId: docSnap.id,
-          ...docSnap.data()
-        } as Task));
+        const tasksList = snapshot.docs.map(
+          (docSnap) =>
+            ({
+              taskId: docSnap.id,
+              ...docSnap.data(),
+            }) as Task,
+        );
 
         // Sort items by position order
         tasksList.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -127,7 +127,7 @@ export class KanbanService {
       },
       (error) => {
         console.error('Firestore Tasks subscription failed:', error);
-      }
+      },
     );
   }
 
@@ -156,20 +156,23 @@ export class KanbanService {
   /**
    * Creates a new Kanban board with unique column IDs.
    */
-  public async createBoard(name: string, columns: { name: string; color: string }[]): Promise<string> {
+  public async createBoard(
+    name: string,
+    columns: { name: string; color: string }[],
+  ): Promise<string> {
     if (!this.currentUserId) throw new Error('Cannot create board: User not authenticated.');
 
     const newColumns: BoardColumn[] = columns.map((col) => ({
       columnId: crypto.randomUUID(),
       name: col.name,
-      color: col.color
+      color: col.color,
     }));
 
     const docRef = await addDoc(collection(this.db, 'boards'), {
       userId: this.currentUserId,
       name,
       columns: newColumns,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
     });
 
     return docRef.id;
@@ -178,7 +181,10 @@ export class KanbanService {
   /**
    * Updates board metadata or edits board columns.
    */
-  public async updateBoard(boardId: string, updates: Partial<Omit<Board, 'boardId' | 'userId'>>): Promise<void> {
+  public async updateBoard(
+    boardId: string,
+    updates: Partial<Omit<Board, 'boardId' | 'userId'>>,
+  ): Promise<void> {
     const boardRef = doc(this.db, 'boards', boardId);
     await updateDoc(boardRef, updates);
   }
@@ -225,7 +231,7 @@ export class KanbanService {
     status: string,
     title: string,
     description: string,
-    subtasks: Subtask[]
+    subtasks: Subtask[],
   ): Promise<string> {
     // Calculate the order value (append to bottom)
     const existingCount = this.tasks().filter((t) => t.columnId === columnId).length;
@@ -237,7 +243,7 @@ export class KanbanService {
       title,
       description,
       order: existingCount,
-      subtasks
+      subtasks,
     });
 
     return docRef.id;
@@ -246,7 +252,10 @@ export class KanbanService {
   /**
    * Updates task details, title, description, or subtask completion checkmarks.
    */
-  public async updateTask(taskId: string, updates: Partial<Omit<Task, 'taskId' | 'boardId'>>): Promise<void> {
+  public async updateTask(
+    taskId: string,
+    updates: Partial<Omit<Task, 'taskId' | 'boardId'>>,
+  ): Promise<void> {
     const taskRef = doc(this.db, 'tasks', taskId);
     await updateDoc(taskRef, updates);
   }
@@ -267,7 +276,7 @@ export class KanbanService {
     taskId: string,
     targetColumnId: string,
     targetStatus: string,
-    newOrder: number
+    newOrder: number,
   ): Promise<void> {
     const batch = writeBatch(this.db);
     const currentTasks = [...this.tasks()];
@@ -318,7 +327,7 @@ export class KanbanService {
         batch.update(ref, {
           columnId: task.columnId,
           status: task.status,
-          order: index
+          order: index,
         });
       });
     }

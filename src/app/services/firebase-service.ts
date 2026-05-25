@@ -5,7 +5,7 @@ import { getFirestore, Firestore } from 'firebase/firestore';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirebaseService {
   private readonly app: FirebaseApp;
@@ -15,7 +15,7 @@ export class FirebaseService {
   constructor() {
     // Initialize the Firebase Application Instance
     this.app = initializeApp(environment.firebase);
-    
+
     // Initialize Auth & Firestore Services
     this.auth = getAuth(this.app);
     this.firestore = getFirestore(this.app);
