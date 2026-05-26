@@ -53,6 +53,18 @@ export class Dashboard implements OnInit {
     return this.tasks().find((t) => t.taskId === selected.taskId) || selected;
   });
 
+  // Derive whether any modal overlay is currently active (used to lock body scroll)
+  protected readonly isAnyModalOpen = computed(() =>
+    this.isAddBoardOpen() ||
+    this.isDeleteBoardOpen() ||
+    this.isEditBoardOpen() ||
+    this.isAddTaskOpen() ||
+    this.isTaskDetailsOpen() ||
+    this.isDeleteTaskOpen() ||
+    this.isEditTaskOpen() ||
+    this.errorMessage() !== null
+  );
+
   constructor() {
     // 1. Detect and apply theme preferences
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -68,6 +80,11 @@ export class Dashboard implements OnInit {
       const activeTheme = this.theme();
       document.documentElement.setAttribute('data-theme', activeTheme);
       localStorage.setItem('theme', activeTheme);
+    });
+
+    // 3. Lock body scroll when any modal is open
+    effect(() => {
+      document.body.style.overflow = this.isAnyModalOpen() ? 'hidden' : '';
     });
   }
 

@@ -4,7 +4,7 @@
 
 :host {
   display: block;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
 }
@@ -12,7 +12,7 @@
 .app-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
   position: relative;
@@ -22,13 +22,13 @@
 .app-body-container {
   display: flex;
   flex: 1;
-  height: calc(100vh - #{$header-height-desktop});
+  height: calc(100dvh - #{$header-height-desktop});
   width: 100%;
   position: relative;
   overflow: hidden;
 
   @include respond-to(mobile) {
-    height: calc(100vh - #{$header-height-mobile});
+    height: calc(100dvh - #{$header-height-mobile});
   }
 }
 
