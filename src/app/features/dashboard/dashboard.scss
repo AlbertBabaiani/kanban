@@ -42,11 +42,11 @@
   margin-left: $sidebar-width-desktop;
   background-color: $theme-bg-app;
   @include interactive-transition(margin-left, background-color);
-  
+
   @include respond-to(tablet-only) {
     margin-left: $sidebar-width-tablet;
   }
-  
+
   @include respond-to(mobile) {
     margin-left: 0 !important; // Full width on mobile sizes
   }
@@ -95,7 +95,7 @@
   height: 100%;
   width: 100%;
   padding: 3.2rem;
-  
+
   .empty-state-card {
     @include flex-column;
     @include flex-center;
@@ -246,7 +246,7 @@
     font-weight: $font-weight-bold;
     text-align: left;
     @include interactive-transition(background-color, color);
-    
+
     .icon-board {
       width: 1.6rem;
       height: 1.6rem;
@@ -257,20 +257,21 @@
     &:hover {
       background-color: $color-lighter-blue;
       color: $color-purple;
-      
+
       .icon-board {
-        filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%); // Converts purple SVG
+        filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%)
+          contrast(84%); // Converts purple SVG
       }
     }
 
     &.active {
       background-color: $color-purple;
       color: $color-white;
-      
+
       .icon-board {
         filter: brightness(0) invert(1); // Converts white SVG
       }
-      
+
       &:hover {
         background-color: $color-purple-hover;
         color: $color-white;
@@ -280,17 +281,19 @@
     &.create-board-btn {
       color: $color-purple;
       @include interactive-transition(color);
-      
+
       .icon-purple-filter {
-        filter: invert(41%) sepia(50%"%") saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%);
+        filter: invert(41%) sepia(50% '%') saturate(1142%) hue-rotate(211deg) brightness(85%)
+          contrast(84%);
       }
 
       &:hover {
         background-color: transparent;
         color: $color-purple-hover;
-        
+
         .icon-board {
-          filter: invert(66%) sepia(85%) saturate(1001%) hue-rotate(204deg) brightness(101%) contrast(101%); // Hover purple
+          filter: invert(66%) sepia(85%) saturate(1001%) hue-rotate(204deg) brightness(101%)
+            contrast(101%); // Hover purple
         }
       }
     }
@@ -325,6 +328,35 @@
         box-shadow: 0 0 0 2px $color-purple;
       }
     }
+
+    .mobile-logout-btn {
+      @include flex-row-center;
+      gap: 1.2rem;
+      width: 100%;
+      padding: 1.2rem 0;
+      margin-top: 0.8rem;
+      color: $color-red;
+      font-size: 1.5rem;
+      font-weight: $font-weight-bold;
+      @include interactive-transition(color);
+
+      .icon-logout {
+        width: 1.8rem;
+        height: 1.6rem;
+        filter: invert(44%) sepia(85%) saturate(1200%) hue-rotate(330deg) brightness(90%)
+          contrast(90%);
+        @include interactive-transition(filter);
+      }
+
+      &:hover {
+        color: $color-red-hover;
+
+        .icon-logout {
+          filter: invert(66%) sepia(85%) saturate(1000%) hue-rotate(330deg) brightness(101%)
+            contrast(101%);
+        }
+      }
+    }
   }
 }
 
@@ -335,7 +367,7 @@
   width: 4rem;
   height: 2rem;
   flex-shrink: 0;
-  
+
   .switch-slider {
     position: absolute;
     top: 0;
@@ -345,10 +377,10 @@
     background-color: $color-purple;
     border-radius: $radius-full;
     @include interactive-transition(background-color);
-    
+
     &::before {
       position: absolute;
-      content: "";
+      content: '';
       height: 1.4rem;
       width: 1.4rem;
       left: 0.3rem;
@@ -393,7 +425,7 @@ app-sidebar {
   height: 100%;
   z-index: 10;
   @include interactive-transition(transform);
-  
+
   @include respond-to(mobile) {
     display: none !important;
   }
@@ -428,16 +460,30 @@ app-header {
 }
 
 @keyframes spinnerRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideDown {
-  from { transform: translateY(-2rem); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-2rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
