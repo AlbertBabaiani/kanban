@@ -79,6 +79,9 @@
   border-radius: $radius-lg;
   box-shadow: $theme-shadow;
   outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
   @include flex-column;
   gap: 0.8rem;
   @include interactive-transition(background-color, box-shadow, transform);
