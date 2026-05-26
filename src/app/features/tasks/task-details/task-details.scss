@@ -139,7 +139,7 @@
 .subtask-checklist-container {
   @include flex-column;
   gap: 0.8rem;
-  max-height: 24vh;
+  max-height: 24dvh;
   overflow-y: auto;
   padding-right: 0.8rem;
   @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
