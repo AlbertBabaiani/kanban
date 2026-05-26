@@ -94,7 +94,7 @@
           (change)="onColumnSelect(columnSelect.value)"
         >
           @for (col of activeBoard().columns; track col.columnId) {
-            <option [value]="col.columnId">{{ col.name }}</option>
+            <option [value]="col.columnId" [selected]="col.columnId === selectedColumnId()">{{ col.name }}</option>
           }
         </select>
         <span class="select-arrow" aria-hidden="true">

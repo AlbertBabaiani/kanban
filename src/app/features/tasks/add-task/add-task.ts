@@ -1,4 +1,4 @@
-import { Component, signal, output, viewChild, ElementRef, AfterViewInit, input, effect } from '@angular/core';
+import { Component, signal, output, viewChild, ElementRef, AfterViewInit, input, OnInit } from '@angular/core';
 import { Board, Subtask } from '../../../core/models/kanban.model';
 
 @Component({
@@ -8,7 +8,7 @@ import { Board, Subtask } from '../../../core/models/kanban.model';
   templateUrl: './add-task.html',
   styleUrl: './add-task.scss'
 })
-export class AddTask implements AfterViewInit {
+export class AddTask implements OnInit, AfterViewInit {
   // Query reference to primary input for focusing
   private readonly taskTitleInput = viewChild<ElementRef<HTMLInputElement>>('taskTitleInputRef');
 
@@ -36,19 +36,17 @@ export class AddTask implements AfterViewInit {
   protected readonly selectedColumnId = signal<string>('');
   protected readonly showErrors = signal<boolean>(false);
 
-  constructor() {
-    // Reactively preselect the correct column based on input context
-    effect(() => {
-      const defCol = this.defaultColumnId();
-      if (defCol) {
-        this.selectedColumnId.set(defCol);
-      } else {
-        const cols = this.activeBoard().columns;
-        if (cols.length > 0 && !this.selectedColumnId()) {
-          this.selectedColumnId.set(cols[0].columnId);
-        }
+  public ngOnInit(): void {
+    // Determine the preselected column exactly once on initialization
+    const defCol = this.defaultColumnId();
+    if (defCol) {
+      this.selectedColumnId.set(defCol);
+    } else {
+      const cols = this.activeBoard().columns;
+      if (cols.length > 0) {
+        this.selectedColumnId.set(cols[0].columnId);
       }
-    });
+    }
   }
 
   // --- Input Handlers ---
