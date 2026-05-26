@@ -7,7 +7,7 @@
     [isMobileMenuOpen]="isMobileMenuOpen()"
     [theme]="theme()"
     (toggleMobileMenu)="toggleMobileMenu()"
-    (createTask)="demoTaskCreate()"
+    (createTask)="openAddTaskModal()"
     (editBoard)="openEditBoardModal()"
     (deleteBoard)="openDeleteBoardModal()"
   />
@@ -172,6 +172,18 @@
       [activeBoard]="activeBoard()!"
       (close)="closeEditBoardModal()"
       (submit)="onBoardEditSubmit($event)"
+    />
+  }
+
+  <!-- ==========================================================================
+       8. DYNAMIC TASK CREATION DIALOG MODAL (ADD TASK OVERLAY)
+       ========================================================================== -->
+  @if (isAddTaskOpen() && activeBoard()) {
+    <app-add-task
+      [activeBoard]="activeBoard()!"
+      [defaultColumnId]="addTaskPreselectedColumnId()"
+      (close)="closeAddTaskModal()"
+      (submit)="onTaskSubmit($event)"
     />
   }
 

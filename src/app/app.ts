@@ -1,17 +1,18 @@
 import { Component, signal, computed, effect, inject } from '@angular/core';
 import { KanbanService } from './core/services/kanban-service';
-import { Board, BoardColumn } from './core/models/kanban.model';
+import { Board, BoardColumn, Subtask } from './core/models/kanban.model';
 import { Sidebar } from './layout/sidebar/sidebar';
 import { Header } from './layout/header/header';
 import { AddBoard } from './features/boards/add-board/add-board';
 import { BoardColumns } from './features/boards/board-columns/board-columns';
 import { DeleteBoard } from './features/boards/delete-board/delete-board';
 import { EditBoard } from './features/boards/edit-board/edit-board';
+import { AddTask } from './features/tasks/add-task/add-task';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -26,6 +27,8 @@ export class App {
   protected readonly isAddBoardOpen = signal<boolean>(false);
   protected readonly isDeleteBoardOpen = signal<boolean>(false);
   protected readonly isEditBoardOpen = signal<boolean>(false);
+  protected readonly isAddTaskOpen = signal<boolean>(false);
+  protected readonly addTaskPreselectedColumnId = signal<string | null>(null);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -93,22 +96,37 @@ export class App {
       });
   }
 
-  protected demoTaskCreate(): void {
+  // --- Task Creation Modal Handlers ---
+  protected openAddTaskModal(columnId: string | null = null): void {
+    this.addTaskPreselectedColumnId.set(columnId);
+    this.isAddTaskOpen.set(true);
+  }
+
+  protected closeAddTaskModal(): void {
+    this.isAddTaskOpen.set(false);
+    this.addTaskPreselectedColumnId.set(null);
+  }
+
+  protected onTaskSubmit(event: {
+    title: string;
+    description: string;
+    subtasks: Subtask[];
+    columnId: string;
+    status: string;
+  }): void {
     const active = this.activeBoard();
-    if (!active || active.columns.length === 0) return;
-    
-    const taskTitle = prompt('Enter Task Title:');
-    if (!taskTitle) return;
+    if (!active) return;
 
     this.kanbanService.createTask(
       active.boardId,
-      active.columns[0].columnId,
-      active.columns[0].name,
-      taskTitle,
-      'Demo Description',
-      [{ title: 'Subtask 1', isCompleted: false }]
+      event.columnId,
+      event.status,
+      event.title,
+      event.description,
+      event.subtasks
     ).then(id => {
-      console.log('Task successfully created:', id);
+      console.log('Task successfully created with ID:', id);
+      this.closeAddTaskModal();
     }).catch(err => {
       console.error('Failed to create task:', err);
     });
@@ -140,24 +158,7 @@ export class App {
   }
 
   protected onAddTaskClick(event: { columnId: string; status: string }): void {
-    const active = this.activeBoard();
-    if (!active) return;
-
-    const taskTitle = prompt(`Enter Task Title for column "${event.status}":`);
-    if (!taskTitle) return;
-
-    this.kanbanService.createTask(
-      active.boardId,
-      event.columnId,
-      event.status,
-      taskTitle,
-      'Created from column empty state helper',
-      [{ title: 'Subtask 1', isCompleted: false }]
-    ).then(id => {
-      console.log(`Task successfully created inside "${event.status}" column:`, id);
-    }).catch(err => {
-      console.error('Failed to create task in column:', err);
-    });
+    this.openAddTaskModal(event.columnId);
   }
 
   // --- Board Deletion Modal Handlers ---
