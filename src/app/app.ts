@@ -9,11 +9,12 @@ import { DeleteBoard } from './features/boards/delete-board/delete-board';
 import { EditBoard } from './features/boards/edit-board/edit-board';
 import { AddTask } from './features/tasks/add-task/add-task';
 import { TaskDetails } from './features/tasks/task-details/task-details';
+import { DeleteTask } from './features/tasks/delete-task/delete-task';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails, DeleteTask],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -32,6 +33,7 @@ export class App {
   protected readonly addTaskPreselectedColumnId = signal<string | null>(null);
   protected readonly isTaskDetailsOpen = signal<boolean>(false);
   protected readonly selectedTask = signal<Task | null>(null);
+  protected readonly isDeleteTaskOpen = signal<boolean>(false);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -154,8 +156,20 @@ export class App {
   }
 
   protected onTaskDelete(taskId: string): void {
-    this.kanbanService.deleteTask(taskId)
+    this.isDeleteTaskOpen.set(true);
+  }
+
+  protected closeDeleteTaskModal(): void {
+    this.isDeleteTaskOpen.set(false);
+  }
+
+  protected onTaskDeleteConfirm(): void {
+    const task = this.activeTask();
+    if (!task) return;
+
+    this.kanbanService.deleteTask(task.taskId)
       .then(() => {
+        this.closeDeleteTaskModal();
         this.closeTaskDetailsModal();
         console.log('Task successfully deleted.');
       })

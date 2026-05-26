@@ -1,0 +1,39 @@
+<div class="modal-backdrop" (click)="triggerClose()" role="presentation">
+  <div 
+    class="modal-content" 
+    (click)="$event.stopPropagation()" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="deleteModalTitle"
+    aria-describedby="deleteModalDesc"
+  >
+    <!-- Modal Title -->
+    <h3 id="deleteModalTitle" class="modal-title">Delete this task?</h3>
+
+    <!-- Modal Warning Description -->
+    <p id="deleteModalDesc" class="modal-description">
+      Are you sure you want to delete the ‘{{ taskName() }}’ task and its subtasks? This action cannot be reversed.
+    </p>
+
+    <!-- Modal Side-by-Side Capsule Action Buttons -->
+    <div class="modal-actions-row">
+      <button 
+        class="btn btn-destructive delete-btn" 
+        (click)="triggerConfirm()"
+        aria-label="Confirm task deletion"
+      >
+        Delete
+      </button>
+      
+      <button 
+        class="btn btn-secondary cancel-btn" 
+        #cancelButtonRef
+        (click)="triggerClose()"
+        aria-label="Cancel task deletion"
+      >
+        Cancel
+      </button>
+    </div>
+
+  </div>
+</div>

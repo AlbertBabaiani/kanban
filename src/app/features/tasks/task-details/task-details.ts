@@ -50,7 +50,6 @@ export class TaskDetails {
 
   protected triggerDelete(): void {
     this.onDeleteTask.emit(this.task().taskId);
-    this.onClose.emit();
   }
 
   protected toggleSubtask(index: number): void {

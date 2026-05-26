@@ -201,4 +201,15 @@
     />
   }
 
+  <!-- ==========================================================================
+       10. TASK DELETION CONFIRMATION DIALOG MODAL (DELETE TASK OVERLAY)
+       ========================================================================== -->
+  @if (isDeleteTaskOpen() && activeTask()) {
+    <app-delete-task
+      [taskName]="activeTask()!.title"
+      (close)="closeDeleteTaskModal()"
+      (confirm)="onTaskDeleteConfirm()"
+    />
+  }
+
 </div>
