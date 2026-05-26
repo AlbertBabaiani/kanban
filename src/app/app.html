@@ -31,34 +31,40 @@
     <div class="main-layout-viewport">
       <!-- BOARD CANVAS VIEWPORT -->
       <main class="board-canvas-wrapper">
-      @if (activeBoard()) {
-        <app-board-columns
-          [columns]="activeBoard()!.columns"
-          [tasks]="tasks()"
-          (addColumn)="openEditBoardModal()"
-          (addTask)="onAddTaskClick($event)"
-          (viewTask)="openTaskDetailsModal($event)"
-          (moveTask)="onTaskMove($event)"
-        />
-      } @else {
-        <!-- Empty State (No Boards Available) -->
-        <div class="empty-boards-canvas">
-          <div class="empty-state-card">
-            <img
-              src="icons/icon-board.svg"
-              alt=""
-              class="icon-empty-board"
-              aria-hidden="true"
-            />
-            <h3 class="empty-state-heading">No Boards Found</h3>
-            <p class="empty-state-text">
-              Get started by creating your very first board in the navigation sidebar.
-            </p>
-            <button class="btn btn-primary add-first-board-btn" (click)="openAddBoardModal()">
-              + Create First Board
-            </button>
-          </div>
+      @if (kanbanService.isTasksLoading()) {
+        <div class="loading-canvas-overlay">
+          <div class="premium-spinner" role="progressbar" aria-label="Loading tasks..."></div>
         </div>
+      } @else {
+        @if (activeBoard()) {
+          <app-board-columns
+            [columns]="activeBoard()!.columns"
+            [tasks]="tasks()"
+            (addColumn)="openEditBoardModal()"
+            (addTask)="onAddTaskClick($event)"
+            (viewTask)="openTaskDetailsModal($event)"
+            (moveTask)="onTaskMove($event)"
+          />
+        } @else {
+          <!-- Empty State (No Boards Available) -->
+          <div class="empty-boards-canvas">
+            <div class="empty-state-card">
+              <img
+                src="icons/icon-board.svg"
+                alt=""
+                class="icon-empty-board"
+                aria-hidden="true"
+              />
+              <h3 class="empty-state-heading">No Boards Found</h3>
+              <p class="empty-state-text">
+                Get started by creating your very first board in the navigation sidebar.
+              </p>
+              <button class="btn btn-primary add-first-board-btn" (click)="openAddBoardModal()">
+                + Create First Board
+              </button>
+            </div>
+          </div>
+        }
       }
     </main>
   </div>
@@ -222,6 +228,16 @@
       [activeBoard]="activeBoard()!"
       (close)="closeEditTaskModal()"
       (submit)="onTaskEditSubmit($event)"
+    />
+  }
+
+  <!-- ==========================================================================
+       12. FIREBASE / TRANSACTIONAL ERROR DIALOG MODAL
+       ========================================================================== -->
+  @if (errorMessage()) {
+    <app-error-modal
+      [errorMessage]="errorMessage()!"
+      (close)="clearError()"
     />
   }
 

@@ -11,11 +11,12 @@ import { AddTask } from './features/tasks/add-task/add-task';
 import { TaskDetails } from './features/tasks/task-details/task-details';
 import { DeleteTask } from './features/tasks/delete-task/delete-task';
 import { EditTask } from './features/tasks/edit-task/edit-task';
+import { ErrorModal } from './features/error-modal/error-modal';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails, DeleteTask, EditTask],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails, DeleteTask, EditTask, ErrorModal],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -36,6 +37,7 @@ export class App {
   protected readonly selectedTask = signal<Task | null>(null);
   protected readonly isDeleteTaskOpen = signal<boolean>(false);
   protected readonly isEditTaskOpen = signal<boolean>(false);
+  protected readonly errorMessage = signal<string | null>(null);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -107,6 +109,7 @@ export class App {
       })
       .catch(err => {
         console.error('Failed to create board:', err);
+        this.errorMessage.set(err.message || 'Failed to create board.');
       });
   }
 
@@ -143,6 +146,7 @@ export class App {
       this.closeAddTaskModal();
     }).catch(err => {
       console.error('Failed to create task:', err);
+      this.errorMessage.set(err.message || 'Failed to create task.');
     });
   }
 
@@ -177,6 +181,7 @@ export class App {
       })
       .catch((err) => {
         console.error('Failed to delete task:', err);
+        this.errorMessage.set(err.message || 'Failed to delete task.');
       });
   }
 
@@ -220,6 +225,7 @@ export class App {
         })
         .catch(err => {
           console.error('Failed to move task during edit:', err);
+          this.errorMessage.set(err.message || 'Failed to edit task.');
         });
     } else {
       this.kanbanService.updateTask(task.taskId, taskUpdates)
@@ -230,6 +236,7 @@ export class App {
         })
         .catch(err => {
           console.error('Failed to update task:', err);
+          this.errorMessage.set(err.message || 'Failed to edit task.');
         });
     }
   }
@@ -256,6 +263,7 @@ export class App {
       console.log('Board successfully updated.');
     }).catch(err => {
       console.error('Failed to update board:', err);
+      this.errorMessage.set(err.message || 'Failed to update board.');
     });
   }
 
@@ -275,6 +283,7 @@ export class App {
       })
       .catch((err) => {
         console.error('Failed to move task:', err);
+        this.errorMessage.set(err.message || 'Failed to move task.');
       });
   }
 
@@ -298,6 +307,11 @@ export class App {
       })
       .catch(err => {
         console.error('Failed to delete board:', err);
+        this.errorMessage.set(err.message || 'Failed to delete board.');
       });
+  }
+
+  protected clearError(): void {
+    this.errorMessage.set(null);
   }
 }

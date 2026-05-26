@@ -26,6 +26,7 @@ export class KanbanService {
   public readonly boards = signal<Board[]>([]);
   public readonly activeBoard = signal<Board | null>(null);
   public readonly tasks = signal<Task[]>([]);
+  public readonly isTasksLoading = signal<boolean>(false);
 
   // --- Real-time Subscription Cleanups ---
   private boardsUnsubscribe: (() => void) | null = null;
@@ -103,11 +104,8 @@ export class KanbanService {
     );
   }
 
-  /**
-   * Subscribes to tasks under a specific active Board.
-   * Auto-managed by the effect tracking activeBoard().
-   */
   private subscribeToTasks(boardId: string): void {
+    this.isTasksLoading.set(true);
     const q = query(collection(this.db, 'tasks'), where('boardId', '==', boardId));
 
     this.tasksUnsubscribe = onSnapshot(
@@ -123,10 +121,16 @@ export class KanbanService {
 
         // Sort items by position order
         tasksList.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-        this.tasks.set(tasksList);
+
+        // Introduce a premium micro-delay (600ms) so the rotating loader is visually apparent and satisfying to see
+        setTimeout(() => {
+          this.tasks.set(tasksList);
+          this.isTasksLoading.set(false);
+        }, 600);
       },
       (error) => {
         console.error('Firestore Tasks subscription failed:', error);
+        this.isTasksLoading.set(false);
       },
     );
   }
@@ -146,6 +150,7 @@ export class KanbanService {
     this.boards.set([]);
     this.activeBoard.set(null);
     this.tasks.set([]);
+    this.isTasksLoading.set(false);
     this.currentUserId = null;
   }
 

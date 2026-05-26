@@ -1,0 +1,100 @@
+@use '../../../assets/scss/variables' as *;
+@use '../../../assets/scss/mixins' as *;
+@use '../../../assets/scss/themes' as *;
+@use 'sass:color';
+
+// ==========================================================================
+// ERROR WARNING DIALOG MODAL SYSTEM STYLES
+// ==========================================================================
+
+:host {
+  display: block;
+}
+
+// Full-screen Glassmorphic Backdrop
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(0.4rem);
+  z-index: 110; // Highly positioned above other overlay dialogs
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+  animation: modalFadeIn 0.2s ease-out forwards;
+}
+
+// Centered Dialog Frame
+.modal-content {
+  background-color: $theme-bg-surface;
+  width: 100%;
+  max-width: 40rem; // Narrower warning alerts footprint
+  padding: 3.2rem;
+  border-radius: $radius-lg;
+  box-shadow: $theme-shadow;
+  @include flex-column;
+  gap: 2.4rem;
+  @include interactive-transition(background-color, box-shadow);
+  animation: modalSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @include respond-to(mobile) {
+    padding: 2.4rem;
+    gap: 2rem;
+  }
+
+  // Danger Red alert title
+  .modal-title {
+    @include heading-l;
+    color: $color-red;
+  }
+
+  // Warning description paragraph details
+  .modal-description {
+    font-size: 1.3rem;
+    line-height: 2.3rem;
+    font-weight: $font-weight-medium;
+    color: $color-medium-grey;
+    word-wrap: break-word;
+  }
+}
+
+// Capsule Button Container
+.modal-actions-row {
+  width: 100%;
+
+  .btn {
+    width: 100%;
+    padding: 1.2rem 2.4rem;
+    font-size: 1.3rem;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-full;
+    @include flex-center;
+  }
+
+  // Primary purple CTA
+  .dismiss-btn {
+    background-color: $color-purple;
+    color: $color-white;
+
+    &:hover:not(:disabled) {
+      background-color: $color-purple-hover;
+    }
+  }
+}
+
+// ==========================================================================
+// ANIMATIONS
+// ==========================================================================
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(2rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

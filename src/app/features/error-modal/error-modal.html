@@ -1,0 +1,31 @@
+<div class="modal-backdrop" (click)="triggerClose()" role="presentation">
+  <div 
+    class="modal-content" 
+    (click)="$event.stopPropagation()" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="errorModalTitle"
+    aria-describedby="errorModalDesc"
+  >
+    <!-- Modal Warning Red Title -->
+    <h3 id="errorModalTitle" class="modal-title">An Error Occurred</h3>
+
+    <!-- Modal Error Message Details -->
+    <p id="errorModalDesc" class="modal-description">
+      {{ errorMessage() }}
+    </p>
+
+    <!-- Modal Capsule Action Button row -->
+    <div class="modal-actions-row">
+      <button 
+        class="btn btn-primary dismiss-btn" 
+        #dismissButtonRef
+        (click)="triggerClose()"
+        aria-label="Dismiss error dialogue"
+      >
+        Dismiss
+      </button>
+    </div>
+
+  </div>
+</div>
