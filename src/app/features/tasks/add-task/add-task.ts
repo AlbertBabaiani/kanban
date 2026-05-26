@@ -29,10 +29,7 @@ export class AddTask implements OnInit, AfterViewInit {
   // --- Dynamic Form Signals (Signals-First) ---
   protected readonly title = signal<string>('');
   protected readonly description = signal<string>('');
-  protected readonly subtasks = signal<Subtask[]>([
-    { title: '', isCompleted: false },
-    { title: '', isCompleted: false }
-  ]);
+  protected readonly subtasks = signal<Subtask[]>([]);
   protected readonly selectedColumnId = signal<string>('');
   protected readonly showErrors = signal<boolean>(false);
 
@@ -86,10 +83,8 @@ export class AddTask implements OnInit, AfterViewInit {
 
   protected triggerSubmit(): void {
     const isTitleEmpty = this.title().trim() === '';
-    // Optional description, but subtask placeholders cannot be empty if specified
-    const hasEmptySubtask = this.subtasks().some((sub) => sub.title.trim() === '');
 
-    if (isTitleEmpty || hasEmptySubtask) {
+    if (isTitleEmpty) {
       this.showErrors.set(true);
       return;
     }
@@ -99,13 +94,18 @@ export class AddTask implements OnInit, AfterViewInit {
     const colMatch = currentBoard.columns.find((col) => col.columnId === colId);
     const colName = colMatch ? colMatch.name : '';
 
+    // Discard subtasks with empty titles
+    const filteredSubtasks = this.subtasks()
+      .filter((sub) => sub.title.trim() !== '')
+      .map((sub) => ({
+        title: sub.title.trim(),
+        isCompleted: false
+      }));
+
     this.onSubmit.emit({
       title: this.title().trim(),
       description: this.description().trim(),
-      subtasks: this.subtasks().map((sub) => ({
-        title: sub.title.trim(),
-        isCompleted: false
-      })),
+      subtasks: filteredSubtasks,
       columnId: colId,
       status: colName
     });

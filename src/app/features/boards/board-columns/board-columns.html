@@ -17,9 +17,11 @@
           <!-- Visual Placeholder Task Card -->
           <article class="task-card" tabindex="0" role="button" [attr.aria-label]="task.title">
             <h3 class="task-title">{{ task.title }}</h3>
-            <p class="task-subtasks-summary">
-              {{ getCompletedSubtasksCount(task) }} of {{ task.subtasks.length }} subtasks
-            </p>
+            @if (task.subtasks && task.subtasks.length > 0) {
+              <p class="task-subtasks-summary">
+                {{ getCompletedSubtasksCount(task) }} of {{ task.subtasks.length }} subtasks
+              </p>
+            }
           </article>
         } @empty {
           <!-- Visual Placeholder Empty State (Clickable Card) -->
