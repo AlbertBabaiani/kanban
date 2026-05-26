@@ -1,4 +1,4 @@
-<div class="board-columns-scrollable">
+<div class="board-columns-scrollable" cdkDropListGroup>
   
   <!-- Render Active Columns -->
   @for (col of columns(); track col.columnId) {
@@ -12,7 +12,14 @@
       </header>
 
       <!-- Column Card Container -->
-      <div class="column-cards-container">
+      <div 
+        class="column-cards-container"
+        cdkDropList
+        [id]="col.columnId"
+        [cdkDropListData]="getTasksForColumn(col.columnId)"
+        [cdkDropListConnectedTo]="dropListIds()"
+        (cdkDropListDropped)="onTaskDrop($event)"
+      >
         @for (task of getTasksForColumn(col.columnId); track task.taskId) {
           <!-- Visual Placeholder Task Card -->
           <article 
@@ -23,6 +30,8 @@
             (click)="triggerViewTask(task)"
             (keydown.enter)="triggerViewTask(task); $event.preventDefault()"
             (keydown.space)="triggerViewTask(task); $event.preventDefault()"
+            cdkDrag
+            [cdkDragData]="task"
           >
             <h3 class="task-title">{{ task.title }}</h3>
             @if (task.subtasks && task.subtasks.length > 0) {

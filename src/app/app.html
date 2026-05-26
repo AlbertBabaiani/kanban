@@ -38,6 +38,7 @@
           (addColumn)="openEditBoardModal()"
           (addTask)="onAddTaskClick($event)"
           (viewTask)="openTaskDetailsModal($event)"
+          (moveTask)="onTaskMove($event)"
         />
       } @else {
         <!-- Empty State (No Boards Available) -->

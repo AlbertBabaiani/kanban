@@ -263,6 +263,21 @@ export class App {
     this.openAddTaskModal(event.columnId);
   }
 
+  protected onTaskMove(event: {
+    taskId: string;
+    targetColumnId: string;
+    targetStatus: string;
+    newOrder: number;
+  }): void {
+    this.kanbanService.moveTask(event.taskId, event.targetColumnId, event.targetStatus, event.newOrder)
+      .then(() => {
+        console.log('Task successfully transitioned via Drag and Drop.');
+      })
+      .catch((err) => {
+        console.error('Failed to move task:', err);
+      });
+  }
+
   // --- Board Deletion Modal Handlers ---
   protected openDeleteBoardModal(): void {
     this.isDeleteBoardOpen.set(true);
