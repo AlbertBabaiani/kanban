@@ -1,4 +1,4 @@
-import { Component, signal, output, viewChild, ElementRef, AfterViewInit, input, OnInit } from '@angular/core';
+import { Component, signal, output, viewChild, ElementRef, AfterViewInit, input, OnInit, HostListener } from '@angular/core';
 import { Board, Subtask } from '../../../core/models/kanban.model';
 
 @Component({
@@ -79,6 +79,11 @@ export class AddTask implements OnInit, AfterViewInit {
   // --- Modal Close/Submit Triggers ---
   protected triggerClose(): void {
     this.onClose.emit();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    this.triggerClose();
   }
 
   protected triggerSubmit(): void {

@@ -1,4 +1,4 @@
-import { Component, input, output, signal, inject } from '@angular/core';
+import { Component, input, output, signal, inject, HostListener } from '@angular/core';
 import { Board, Task } from '../../../core/models/kanban.model';
 import { KanbanService } from '../../../core/services/kanban-service';
 
@@ -32,6 +32,11 @@ export class TaskDetails {
   // --- Action Handlers ---
   protected triggerClose(): void {
     this.onClose.emit();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    this.triggerClose();
   }
 
   protected toggleOptionsMenu(event: MouseEvent): void {

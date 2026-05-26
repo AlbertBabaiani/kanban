@@ -1,4 +1,4 @@
-import { Component, signal, output, viewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, signal, output, viewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-add-board',
@@ -61,6 +61,11 @@ export class AddBoard implements AfterViewInit {
   // --- Triggers ---
   protected triggerClose(): void {
     this.onClose.emit();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    this.triggerClose();
   }
 
   protected triggerSubmit(): void {
