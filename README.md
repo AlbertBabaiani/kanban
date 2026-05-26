@@ -11,7 +11,7 @@
   <br />
   <br />
 
-  <div style="display: flex; gap: 1rem; justify-content: center;">
+  <div style="display: flex; gap: 1rem; justify-content: center; text-align: center; text-decoration: none; text-underline: none;">
 
   <a href="https://kanban-ng.vercel.app">
     <img src="https://img.shields.io/badge/View_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="View Live Demo" />
