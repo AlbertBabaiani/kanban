@@ -1,0 +1,335 @@
+@use '../../../../assets/scss/variables' as *;
+@use '../../../../assets/scss/mixins' as *;
+@use '../../../../assets/scss/themes' as *;
+
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// Background Container Frame
+.auth-page-container {
+  @include flex-center;
+  width: 100%;
+  height: 100%;
+  padding: 2.4rem;
+  background-color: $theme-bg-app;
+  position: relative;
+  @include interactive-transition(background-color);
+}
+
+// Sleek Interactive Sign-In Card
+.auth-card-frame {
+  background-color: $theme-bg-surface;
+  border: 1px solid $theme-border;
+  width: 100%;
+  max-width: 48rem;
+  padding: 4.8rem 4rem;
+  border-radius: $radius-lg;
+  box-shadow: $theme-shadow;
+  @include flex-column;
+  gap: 3.2rem;
+  @include interactive-transition(background-color, border-color, box-shadow);
+  animation: cardSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @include respond-to(mobile) {
+    padding: 3.2rem 2.4rem;
+    gap: 2.4rem;
+  }
+
+  // Interactive Responsive Logo Filters
+  .auth-logo-row {
+    @include flex-center;
+    margin-bottom: 0.8rem;
+
+    img {
+      height: 2.6rem;
+      object-fit: contain;
+    }
+
+    // Toggle showing logo versions dynamically by parent themes
+    .logo-light-theme {
+      display: block;
+      [data-theme="dark"] & { display: none; }
+    }
+
+    .logo-dark-theme {
+      display: none;
+      [data-theme="dark"] & { display: block; }
+    }
+  }
+
+  // Typography Alignment
+  .auth-context-header {
+    text-align: center;
+    @include flex-column;
+    gap: 0.8rem;
+
+    .auth-title {
+      @include heading-xl;
+      color: $theme-text-primary;
+      @include interactive-transition(color);
+    }
+
+    .auth-subtitle {
+      font-size: 1.3rem;
+      line-height: 1.8rem;
+      color: $color-medium-grey;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+// Dangerous system exception warnings
+.auth-system-alert {
+  padding: 1.6rem;
+  background-color: rgba(234, 85, 85, 0.1);
+  border: 1px solid $color-red;
+  border-radius: $radius-md;
+  color: $color-red;
+  font-size: 1.3rem;
+  font-weight: $font-weight-bold;
+  line-height: 1.8rem;
+  text-align: center;
+}
+
+// Layout Form Structure
+.auth-form {
+  @include flex-column;
+  gap: 2.4rem;
+
+  .input-field-group {
+    @include flex-column;
+    gap: 0.8rem;
+
+    .field-label {
+      font-size: 1.2rem;
+      font-weight: $font-weight-bold;
+      color: $theme-text-primary;
+      @include interactive-transition(color);
+    }
+
+    .field-input-wrapper {
+      position: relative;
+      width: 100%;
+      @include flex-row-center;
+    }
+
+    // Form inputs text fields supporting Idle, Active (purple), and Error states
+    .form-control {
+      width: 100%;
+      padding: 1.2rem 1.6rem;
+      border-radius: $radius-md;
+      background-color: transparent;
+      border: 1px solid rgba(130, 143, 163, 0.25);
+      color: $theme-text-primary;
+      font-size: 1.3rem;
+      font-weight: $font-weight-medium;
+      outline: none;
+      @include interactive-transition(border-color, background-color, color);
+
+      &::placeholder {
+        color: rgba(130, 143, 163, 0.5);
+      }
+
+      &:focus {
+        border-color: $color-purple;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .password-input-field {
+      padding-right: 5.6rem !important;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 1.6rem;
+      color: $color-purple;
+      font-size: 1.3rem;
+      font-weight: $font-weight-bold;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      @include interactive-transition(color);
+
+      &:hover {
+        color: $color-purple-hover;
+      }
+    }
+
+    // Error status layout constraints (matches prompt description requirements)
+    &.error {
+      .form-control {
+        border-color: $color-red !important;
+      }
+
+      .inline-error-text {
+        position: absolute;
+        right: 1.6rem;
+        color: $color-red;
+        font-size: 1.3rem;
+        font-weight: $font-weight-bold;
+        pointer-events: none;
+      }
+    }
+  }
+
+  // Primary Submission CTA
+  .auth-submit-btn {
+    width: 100%;
+    padding: 1.4rem;
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    border-radius: $radius-full;
+    background-color: $color-purple;
+    color: $color-white;
+    @include flex-center;
+    @include interactive-transition(background-color, transform, opacity);
+
+    &:hover:not(:disabled) {
+      background-color: $color-purple-hover;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Satisfying Redirect Links
+.auth-redirect-row {
+  @include flex-row-center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 1.3rem;
+  color: $color-medium-grey;
+  font-weight: $font-weight-medium;
+
+  .redirect-link {
+    color: $color-purple;
+    font-weight: $font-weight-bold;
+    text-decoration: none;
+    @include interactive-transition(color);
+
+    &:hover {
+      color: $color-purple-hover;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Action Button Spinner Loader
+.form-loader {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: $color-white;
+  border-radius: 50%;
+  animation: spinnerRotate 0.6s linear infinite;
+}
+
+// animations
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spinnerRotate {
+  to { transform: rotate(360deg); }
+}
+
+.auth-theme-toggler {
+  position: absolute;
+  top: 3.2rem;
+  right: 3.2rem;
+  @include flex-center;
+  gap: 2.4rem;
+  background-color: $theme-bg-surface;
+  border: 1px solid $theme-border;
+  padding: 1.2rem 2rem;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  outline: none;
+  box-shadow: $theme-shadow;
+  @include interactive-transition(background-color, border-color, box-shadow);
+
+  .icon-theme {
+    width: 1.9rem;
+    height: 1.9rem;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: $theme-subtask-bg-hover;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px $color-purple;
+  }
+
+  @include respond-to(mobile) {
+    top: 1.6rem;
+    right: 1.6rem;
+    padding: 0.8rem 1.6rem;
+    gap: 1.6rem;
+  }
+}
+
+// Elegant Slider Toggle Switch Styling
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 4rem;
+  height: 2rem;
+  flex-shrink: 0;
+  
+  .switch-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $color-purple;
+    border-radius: $radius-full;
+    @include interactive-transition(background-color);
+    
+    &::before {
+      position: absolute;
+      content: "";
+      height: 1.4rem;
+      width: 1.4rem;
+      left: 0.3rem;
+      bottom: 0.3rem;
+      background-color: $color-white;
+      border-radius: 50%;
+      @include interactive-transition(transform);
+    }
+
+    &.checked {
+      background-color: $color-purple-hover;
+
+      &::before {
+        transform: translateX(2rem);
+      }
+    }
+  }
+}

@@ -1,0 +1,118 @@
+<div class="auth-page-container">
+  <!-- Dynamic Theme Switcher Toggler -->
+  <div 
+    class="auth-theme-toggler" 
+    (click)="toggleTheme()"
+    (keydown.enter)="toggleTheme()"
+    (keydown.space)="toggleTheme()"
+    role="button"
+    tabindex="0"
+    aria-label="Toggle dark theme mode"
+  >
+    <img src="icons/icon-light-theme.svg" alt="Light theme" class="icon-theme" />
+    <div class="switch-toggle" aria-hidden="true">
+      <span class="switch-slider" [class.checked]="theme() === 'dark'"></span>
+    </div>
+    <img src="icons/icon-dark-theme.svg" alt="Dark theme" class="icon-theme" />
+  </div>
+
+  <div class="auth-card-frame">
+    <!-- Brand Logo Pill -->
+    <div class="auth-logo-row">
+      <img 
+        [src]="theme() === 'dark' ? 'icons/logo-light.svg' : 'icons/logo-dark.svg'" 
+        alt="Kanban Logo" 
+        class="brand-logo" 
+      />
+    </div>
+
+    <!-- Centered Form Context -->
+    <div class="auth-context-header">
+      <h2 class="auth-title">Sign In</h2>
+      <p class="auth-subtitle">Welcome back! Access your board workspace below.</p>
+    </div>
+
+    <!-- Firebase System Error Alert -->
+    @if (formErrorMessage()) {
+      <div class="auth-system-alert" role="alert" aria-live="assertive">
+        <span>{{ formErrorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Interactive Form Canvas -->
+    <form class="auth-form" (submit)="onSubmit($event)" novalidate>
+      <!-- Email Field Group -->
+      <div class="input-field-group" [class.error]="emailError()">
+        <label for="email" class="field-label">Email Address</label>
+        <div class="field-input-wrapper">
+          <input
+            #emailInputRef
+            type="email"
+            id="email"
+            placeholder="e.g. alex@example.com"
+            class="form-control"
+            [value]="email()"
+            (input)="onEmailChange($event)"
+            [disabled]="isLoading()"
+            required
+            aria-required="true"
+            [attr.aria-invalid]="emailError() ? 'true' : 'false'"
+          />
+          @if (emailError()) {
+            <span class="inline-error-text">{{ emailError() }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Password Field Group -->
+      <div class="input-field-group" [class.error]="passwordError()">
+        <label for="password" class="field-label">Password</label>
+        <div class="field-input-wrapper">
+          <input
+            [type]="showPassword() ? 'text' : 'password'"
+            id="password"
+            placeholder="Enter password"
+            class="form-control password-input-field"
+            [value]="password()"
+            (input)="onPasswordChange($event)"
+            [disabled]="isLoading()"
+            required
+            aria-required="true"
+            [attr.aria-invalid]="passwordError() ? 'true' : 'false'"
+          />
+          @if (!passwordError()) {
+            <button
+              type="button"
+              class="password-toggle-btn"
+              (click)="togglePasswordVisibility()"
+              aria-label="Toggle password visibility"
+            >
+              {{ showPassword() ? 'Hide' : 'Show' }}
+            </button>
+          } @else {
+            <span class="inline-error-text">{{ passwordError() }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- Submit Action CTA -->
+      <button
+        type="submit"
+        class="btn btn-primary auth-submit-btn"
+        [disabled]="isLoading()"
+      >
+        @if (isLoading()) {
+          <span class="form-loader" aria-label="Authenticating..."></span>
+        } @else {
+          Sign In
+        }
+      </button>
+    </form>
+
+    <!-- Sign Up Redirect Flow -->
+    <div class="auth-redirect-row">
+      <span>Don't have an account?</span>
+      <a routerLink="/signup" class="redirect-link">Sign Up</a>
+    </div>
+  </div>
+</div>

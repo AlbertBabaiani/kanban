@@ -19,6 +19,7 @@ export class Sidebar {
   public readonly onToggleTheme = output<void>({ alias: 'toggleTheme' });
   public readonly onSelectBoard = output<Board>({ alias: 'selectBoard' });
   public readonly onCreateBoard = output<void>({ alias: 'createBoard' });
+  public readonly onLogout = output<void>({ alias: 'logout' });
 
   // --- Computed Selectors ---
   protected readonly boardsCount = computed(() => this.boards().length);
@@ -38,5 +39,9 @@ export class Sidebar {
 
   protected triggerCreateBoard(): void {
     this.onCreateBoard.emit();
+  }
+
+  protected triggerLogout(): void {
+    this.onLogout.emit();
   }
 }

@@ -172,6 +172,33 @@
       }
     }
   }
+
+  // Logout Button
+  .logout-btn {
+    @include flex-row-center;
+    gap: 1.6rem;
+    padding: 1.4rem 0 1.4rem 0.8rem;
+    color: $color-red;
+    font-size: 1.5rem;
+    font-weight: $font-weight-bold;
+    @include interactive-transition(color);
+
+    .icon-logout {
+      width: 1.8rem;
+      height: 1.6rem;
+      color: $color-red;
+      filter: invert(44%) sepia(85%) saturate(1200%) hue-rotate(330deg) brightness(90%) contrast(90%); // Red filter
+      @include interactive-transition(filter);
+    }
+
+    &:hover {
+      color: $color-red-hover;
+      
+      .icon-logout {
+        filter: invert(66%) sepia(85%) saturate(1000%) hue-rotate(330deg) brightness(101%) contrast(101%); // Hover red filter
+      }
+    }
+  }
 }
 
 // Elegant Slider Toggle Switch Styling
