@@ -13,15 +13,15 @@
 
   <div style="display: flex; gap: 1rem; justify-content: center; text-align: center; text-decoration: none; text-underline: none;">
 
-  <a href="https://kanban-ng.vercel.app">
+  <a href="https://kanban-ng.vercel.app" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/View_Live_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="View Live Demo" />
   </a>
   
-  <a href="https://github.com/AlbertBabaiani/kanban.git">
+  <a href="https://github.com/AlbertBabaiani/kanban.git" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/GitHub_Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repo" />
   </a>
 
-  <a href="https://www.figma.com/design/Ohaa8zpSgY0lKohylLI7wp/kanban-task-management-web-app--Copy-?node-id=0-1&t=AYoQxGurGZyw17xZ-0">
+  <a href="https://www.figma.com/design/Ohaa8zpSgY0lKohylLI7wp/kanban-task-management-web-app--Copy-?node-id=0-1&t=AYoQxGurGZyw17xZ-0" style="text-decoration: none;">
     <img src="https://img.shields.io/badge/Figma_Design_File-000000?style=for-the-badge&logo=figma&logoColor=white" alt="Figma Design" />
   </a>
   </div>
