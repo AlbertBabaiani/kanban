@@ -15,7 +15,15 @@
       <div class="column-cards-container">
         @for (task of getTasksForColumn(col.columnId); track task.taskId) {
           <!-- Visual Placeholder Task Card -->
-          <article class="task-card" tabindex="0" role="button" [attr.aria-label]="task.title">
+          <article 
+            class="task-card" 
+            tabindex="0" 
+            role="button" 
+            [attr.aria-label]="task.title"
+            (click)="triggerViewTask(task)"
+            (keydown.enter)="triggerViewTask(task); $event.preventDefault()"
+            (keydown.space)="triggerViewTask(task); $event.preventDefault()"
+          >
             <h3 class="task-title">{{ task.title }}</h3>
             @if (task.subtasks && task.subtasks.length > 0) {
               <p class="task-subtasks-summary">

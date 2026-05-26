@@ -1,0 +1,269 @@
+@use '../../../../assets/scss/variables' as *;
+@use '../../../../assets/scss/mixins' as *;
+@use '../../../../assets/scss/themes' as *;
+@use 'sass:color';
+
+// ==========================================================================
+// TASK DETAILS MODAL SYSTEM STYLES
+// ==========================================================================
+
+:host {
+  display: block;
+}
+
+// Full-screen Glassmorphic Backdrop
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(0.4rem);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.4rem;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+// Centered Dialog Frame
+.modal-content {
+  background-color: $theme-bg-surface;
+  width: 100%;
+  max-width: 48rem;
+  padding: 3.2rem;
+  border-radius: $radius-lg;
+  box-shadow: $theme-shadow;
+  @include flex-column;
+  gap: 2.4rem;
+  @include interactive-transition(background-color, box-shadow);
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @include respond-to(mobile) {
+    padding: 2.4rem;
+    gap: 2rem;
+  }
+}
+
+// Modal Header
+.task-details-header {
+  @include flex-between;
+  gap: 2.4rem;
+  position: relative;
+
+  .task-title-text {
+    @include heading-l;
+    color: $theme-text-primary;
+    @include interactive-transition(color);
+  }
+}
+
+// Ellipsis Actions Button & Panel
+.options-menu-container {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+
+  .task-options-btn {
+    padding: 0.8rem 0.6rem;
+    @include flex-center;
+    border-radius: 50%;
+    @include interactive-transition(background-color);
+
+    &:hover {
+      background-color: rgba(130, 143, 163, 0.1);
+    }
+  }
+
+  .options-dropdown {
+    position: absolute;
+    top: calc(100% + 0.8rem);
+    right: 0;
+    width: 16rem;
+    background-color: $theme-dropdown-bg;
+    border: 1px solid $theme-dropdown-border;
+    box-shadow: $theme-shadow;
+    border-radius: $radius-md;
+    padding: 0.8rem 0;
+    @include flex-column;
+    z-index: 20;
+    animation: fadeIn 0.15s ease-out forwards;
+
+    .dropdown-item {
+      width: 100%;
+      text-align: left;
+      padding: 0.8rem 1.6rem;
+      font-size: 1.3rem;
+      font-weight: $font-weight-medium;
+      color: $color-medium-grey;
+      border-radius: 0;
+      @include interactive-transition(color, background-color);
+
+      &:hover {
+        background-color: $theme-subtask-bg-hover;
+        color: $theme-text-primary;
+      }
+
+      &.destructive {
+        color: $color-red;
+
+        &:hover {
+          color: $color-red-hover;
+        }
+      }
+    }
+  }
+}
+
+// Description Text
+.task-desc-container {
+  .task-description-text {
+    @include body-l;
+    color: $color-medium-grey;
+  }
+}
+
+// Subtasks Checklist Section
+.task-subtasks-section {
+  @include flex-column;
+  gap: 1.6rem;
+
+  .subtask-heading-summary {
+    @include heading-s;
+    color: $color-medium-grey;
+  }
+}
+
+.subtask-checklist-container {
+  @include flex-column;
+  gap: 0.8rem;
+  max-height: 24vh;
+  overflow-y: auto;
+  padding-right: 0.8rem;
+  @include custom-scrollbar($theme-scrollbar-track, $theme-scrollbar-thumb);
+}
+
+// Interactive Subtask Card
+.subtask-checkbox-card {
+  @include flex-row-center;
+  gap: 1.6rem;
+  background-color: $theme-subtask-bg;
+  border-radius: $radius-sm;
+  padding: 1.2rem 1.6rem;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid transparent;
+  @include interactive-transition(background-color, border-color, box-shadow);
+
+  &:hover {
+    background-color: $theme-subtask-bg-hover;
+  }
+
+  &:focus-visible {
+    border-color: $color-purple;
+    box-shadow: 0 0 0 2px rgba(99, 95, 199, 0.25);
+  }
+
+  .subtask-title-text {
+    font-size: 1.2rem;
+    font-weight: $font-weight-bold;
+    line-height: 1.5rem;
+    color: $theme-text-primary;
+    @include interactive-transition(color, text-decoration);
+  }
+
+  &.completed {
+    .subtask-title-text {
+      color: $theme-subtask-completed;
+      text-decoration: line-through;
+    }
+  }
+}
+
+// Custom Styled Checkbox indicator
+.checkbox-indicator {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 0.2rem;
+  border: 1px solid rgba(130, 143, 163, 0.24);
+  background-color: $theme-bg-surface;
+  @include flex-center;
+  flex-shrink: 0;
+  @include interactive-transition(background-color, border-color);
+
+  img {
+    width: 0.8rem;
+    height: 0.6rem;
+    filter: brightness(0) invert(1); // Force standard check SVG to white
+  }
+
+  &.checked {
+    background-color: $color-purple;
+    border-color: $color-purple;
+  }
+}
+
+// Status selection section
+.task-status-section {
+  @include flex-column;
+  gap: 0.8rem;
+
+  .form-label {
+    @include heading-s;
+    color: $color-medium-grey;
+  }
+}
+
+// Premium Styled Custom Select dropdown
+.select-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  select {
+    width: 100%;
+    cursor: pointer;
+    appearance: none; // Completely hide browser default arrow styling
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 4.8rem; // Make space for custom drop chevron
+    background-color: transparent;
+    border: 1px solid $theme-dropdown-border;
+    color: $theme-text-primary;
+
+    option {
+      background-color: $theme-dropdown-bg;
+      color: $theme-text-primary;
+    }
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 1.6rem;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 1rem;
+      height: 0.7rem;
+      filter: invert(41%) sepia(50%) saturate(1142%) hue-rotate(211deg) brightness(85%) contrast(84%); // Styled standard purple/grey filter
+    }
+  }
+}
+
+// ==========================================================================
+// KEYFRAMES
+// ==========================================================================
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(3rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

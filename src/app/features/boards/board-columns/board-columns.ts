@@ -16,6 +16,7 @@ export class BoardColumns {
   // --- Outputs (Signals-First) ---
   public readonly onAddColumn = output<void>({ alias: 'addColumn' });
   public readonly onAddTask = output<{ columnId: string; status: string }>({ alias: 'addTask' });
+  public readonly onViewTask = output<Task>({ alias: 'viewTask' });
 
   // --- Helper Selectors ---
   protected getTasksForColumn(columnId: string): Task[] {
@@ -32,5 +33,9 @@ export class BoardColumns {
 
   protected triggerAddTask(columnId: string, status: string): void {
     this.onAddTask.emit({ columnId, status });
+  }
+
+  protected triggerViewTask(task: Task): void {
+    this.onViewTask.emit(task);
   }
 }

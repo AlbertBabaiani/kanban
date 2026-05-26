@@ -1,6 +1,6 @@
 import { Component, signal, computed, effect, inject } from '@angular/core';
 import { KanbanService } from './core/services/kanban-service';
-import { Board, BoardColumn, Subtask } from './core/models/kanban.model';
+import { Board, BoardColumn, Subtask, Task } from './core/models/kanban.model';
 import { Sidebar } from './layout/sidebar/sidebar';
 import { Header } from './layout/header/header';
 import { AddBoard } from './features/boards/add-board/add-board';
@@ -8,11 +8,12 @@ import { BoardColumns } from './features/boards/board-columns/board-columns';
 import { DeleteBoard } from './features/boards/delete-board/delete-board';
 import { EditBoard } from './features/boards/edit-board/edit-board';
 import { AddTask } from './features/tasks/add-task/add-task';
+import { TaskDetails } from './features/tasks/task-details/task-details';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -29,12 +30,21 @@ export class App {
   protected readonly isEditBoardOpen = signal<boolean>(false);
   protected readonly isAddTaskOpen = signal<boolean>(false);
   protected readonly addTaskPreselectedColumnId = signal<string | null>(null);
+  protected readonly isTaskDetailsOpen = signal<boolean>(false);
+  protected readonly selectedTask = signal<Task | null>(null);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
   protected readonly activeBoard = computed(() => this.kanbanService.activeBoard());
   protected readonly boardsCount = computed(() => this.boards().length);
   protected readonly tasks = computed(() => this.kanbanService.tasks());
+
+  // Dynamic selected task selector mapping to latest tasks array (ensures subtasks check/uncheck updates immediately on the details modal)
+  protected readonly activeTask = computed(() => {
+    const selected = this.selectedTask();
+    if (!selected) return null;
+    return this.tasks().find((t) => t.taskId === selected.taskId) || selected;
+  });
 
   constructor() {
     // 1. Detect and apply theme preferences
@@ -130,6 +140,33 @@ export class App {
     }).catch(err => {
       console.error('Failed to create task:', err);
     });
+  }
+
+  // --- Task Details Modal Handlers ---
+  protected openTaskDetailsModal(task: Task): void {
+    this.selectedTask.set(task);
+    this.isTaskDetailsOpen.set(true);
+  }
+
+  protected closeTaskDetailsModal(): void {
+    this.isTaskDetailsOpen.set(false);
+    this.selectedTask.set(null);
+  }
+
+  protected onTaskDelete(taskId: string): void {
+    this.kanbanService.deleteTask(taskId)
+      .then(() => {
+        this.closeTaskDetailsModal();
+        console.log('Task successfully deleted.');
+      })
+      .catch((err) => {
+        console.error('Failed to delete task:', err);
+      });
+  }
+
+  protected onTaskEdit(task: Task): void {
+    console.log('Task edit trigger requested for task:', task);
+    // Placeholder edit action handler trigger
   }
 
   // --- Board Editing Modal Handlers ---

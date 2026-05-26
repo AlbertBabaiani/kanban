@@ -1,0 +1,89 @@
+<div class="modal-backdrop" (click)="triggerClose()" role="presentation">
+  <div class="modal-content" (click)="$event.stopPropagation(); closeOptionsMenu()" role="dialog" aria-modal="true" aria-labelledby="taskTitle">
+    
+    <!-- Modal Header -->
+    <header class="task-details-header">
+      <h3 id="taskTitle" class="task-title-text">{{ task().title }}</h3>
+      
+      <!-- Ellipsis Actions dropdown -->
+      <div class="options-menu-container">
+        <button 
+          class="task-options-btn" 
+          (click)="toggleOptionsMenu($event)"
+          aria-label="Task options menu"
+          [attr.aria-expanded]="isOptionsMenuOpen()"
+        >
+          <img src="icons/icon-vertical-ellipsis.svg" alt="Options" class="icon-options" />
+        </button>
+
+        @if (isOptionsMenuOpen()) {
+          <div class="options-dropdown" (click)="$event.stopPropagation()" role="menu">
+            <button class="dropdown-item" (click)="triggerEdit()" role="menuitem">Edit Task</button>
+            <button class="dropdown-item destructive" (click)="triggerDelete()" role="menuitem">Delete Task</button>
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- Task Description -->
+    <div class="task-desc-container">
+      <p class="task-description-text">
+        {{ task().description || 'No description provided.' }}
+      </p>
+    </div>
+
+    <!-- Subtasks Checklist Section -->
+    @if (task().subtasks.length > 0) {
+      <div class="task-subtasks-section">
+        <h4 class="subtask-heading-summary">
+          Subtasks ({{ getCompletedSubtasksCount() }} of {{ task().subtasks.length }})
+        </h4>
+
+        <div class="subtask-checklist-container" role="group" aria-label="Task subtasks list">
+          @for (sub of task().subtasks; track $index; let index = $index) {
+            <div 
+              class="subtask-checkbox-card" 
+              [class.completed]="sub.isCompleted" 
+              (click)="toggleSubtask(index)"
+              (keydown.enter)="toggleSubtask(index); $event.preventDefault()"
+              (keydown.space)="toggleSubtask(index); $event.preventDefault()"
+              role="checkbox"
+              [attr.aria-checked]="sub.isCompleted"
+              tabindex="0"
+              [attr.aria-label]="sub.title"
+            >
+              <!-- Styled Checkbox Indicator Box -->
+              <span class="checkbox-indicator" [class.checked]="sub.isCompleted">
+                @if (sub.isCompleted) {
+                  <img src="icons/icon-check.svg" alt="" aria-hidden="true" />
+                }
+              </span>
+              <span class="subtask-title-text">{{ sub.title }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Column/Status Selector Section -->
+    <div class="task-status-section">
+      <label class="form-label" for="taskDetailsStatusSelect">Current Status</label>
+      <div class="select-container">
+        <select 
+          id="taskDetailsStatusSelect"
+          #statusSelect
+          [value]="task().columnId"
+          (change)="onStatusChange(statusSelect.value)"
+        >
+          @for (col of activeBoard().columns; track col.columnId) {
+            <option [value]="col.columnId" [selected]="col.columnId === task().columnId">{{ col.name }}</option>
+          }
+        </select>
+        <span class="select-arrow" aria-hidden="true">
+          <img src="icons/icon-chevron-down.svg" alt="" />
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>

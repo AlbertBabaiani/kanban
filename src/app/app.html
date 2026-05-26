@@ -37,6 +37,7 @@
           [tasks]="tasks()"
           (addColumn)="openEditBoardModal()"
           (addTask)="onAddTaskClick($event)"
+          (viewTask)="openTaskDetailsModal($event)"
         />
       } @else {
         <!-- Empty State (No Boards Available) -->
@@ -184,6 +185,19 @@
       [defaultColumnId]="addTaskPreselectedColumnId()"
       (close)="closeAddTaskModal()"
       (submit)="onTaskSubmit($event)"
+    />
+  }
+
+  <!-- ==========================================================================
+       9. DYNAMIC TASK DETAILS PREVIEW DIALOG MODAL (VIEW TASK OVERLAY)
+       ========================================================================== -->
+  @if (isTaskDetailsOpen() && activeTask() && activeBoard()) {
+    <app-task-details
+      [task]="activeTask()!"
+      [activeBoard]="activeBoard()!"
+      (close)="closeTaskDetailsModal()"
+      (deleteTask)="onTaskDelete($event)"
+      (editTask)="onTaskEdit($event)"
     />
   }
 
