@@ -143,6 +143,15 @@ export class Signup implements AfterViewInit {
     } else if (passwordVal.length < 6) {
       this.passwordError.set('At least 6 characters');
       hasError = true;
+    } else if (!/[A-Z]/.test(passwordVal)) {
+      this.passwordError.set('Need 1 uppercase letter');
+      hasError = true;
+    } else if (!/[a-z]/.test(passwordVal)) {
+      this.passwordError.set('Need 1 lowercase letter');
+      hasError = true;
+    } else if (!/\d/.test(passwordVal)) {
+      this.passwordError.set('Need 1 number');
+      hasError = true;
     }
 
     // Validate confirm password

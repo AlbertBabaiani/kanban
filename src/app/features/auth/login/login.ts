@@ -108,13 +108,23 @@ export class Login implements AfterViewInit {
         return this.router.navigate(['/']);
       })
       .catch((err: any) => {
+        this.isLoading.set(true); // reset
         this.isLoading.set(false);
         console.error('Login action rejected:', err);
-        // Humanize classic Firebase errors
+        
+        // Humanize classic Firebase errors dynamically and strip 'Firebase:' brand prefixes
         if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
           this.formErrorMessage.set('Invalid email or password credential.');
+        } else if (err.code === 'auth/invalid-email') {
+          this.formErrorMessage.set('Invalid email address format.');
         } else {
-          this.formErrorMessage.set(err.message || 'An unexpected failure occurred.');
+          let msg = err.message || 'An unexpected failure occurred.';
+          if (msg.includes('Firebase:')) {
+            msg = msg.replace('Firebase:', '').trim();
+          }
+          // Remove internal error tags like "(auth/invalid-email)"
+          msg = msg.replace(/\s*\(auth\/[a-z-]+\)\.?/g, '').trim();
+          this.formErrorMessage.set(msg);
         }
       });
   }
