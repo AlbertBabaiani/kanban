@@ -45,7 +45,6 @@ export class TaskDetails {
 
   protected triggerEdit(): void {
     this.onEditTask.emit(this.task());
-    this.onClose.emit();
   }
 
   protected triggerDelete(): void {

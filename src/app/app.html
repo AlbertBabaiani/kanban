@@ -212,4 +212,16 @@
     />
   }
 
+  <!-- ==========================================================================
+       11. DYNAMIC TASK EDIT DIALOG MODAL (EDIT TASK OVERLAY)
+       ========================================================================== -->
+  @if (isEditTaskOpen() && activeTask() && activeBoard()) {
+    <app-edit-task
+      [task]="activeTask()!"
+      [activeBoard]="activeBoard()!"
+      (close)="closeEditTaskModal()"
+      (submit)="onTaskEditSubmit($event)"
+    />
+  }
+
 </div>

@@ -10,11 +10,12 @@ import { EditBoard } from './features/boards/edit-board/edit-board';
 import { AddTask } from './features/tasks/add-task/add-task';
 import { TaskDetails } from './features/tasks/task-details/task-details';
 import { DeleteTask } from './features/tasks/delete-task/delete-task';
+import { EditTask } from './features/tasks/edit-task/edit-task';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails, DeleteTask],
+  imports: [Sidebar, Header, AddBoard, BoardColumns, DeleteBoard, EditBoard, AddTask, TaskDetails, DeleteTask, EditTask],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -34,6 +35,7 @@ export class App {
   protected readonly isTaskDetailsOpen = signal<boolean>(false);
   protected readonly selectedTask = signal<Task | null>(null);
   protected readonly isDeleteTaskOpen = signal<boolean>(false);
+  protected readonly isEditTaskOpen = signal<boolean>(false);
 
   // --- Computed Selectors ---
   protected readonly boards = computed(() => this.kanbanService.boards());
@@ -179,8 +181,57 @@ export class App {
   }
 
   protected onTaskEdit(task: Task): void {
-    console.log('Task edit trigger requested for task:', task);
-    // Placeholder edit action handler trigger
+    this.selectedTask.set(task);
+    this.isEditTaskOpen.set(true);
+  }
+
+  protected closeEditTaskModal(): void {
+    this.isEditTaskOpen.set(false);
+  }
+
+  protected onTaskEditSubmit(event: {
+    title: string;
+    description: string;
+    subtasks: Subtask[];
+    columnId: string;
+    status: string;
+  }): void {
+    const task = this.activeTask();
+    if (!task) return;
+
+    const isColumnChanged = task.columnId !== event.columnId;
+    const taskUpdates = {
+      title: event.title,
+      description: event.description,
+      subtasks: event.subtasks
+    };
+
+    if (isColumnChanged) {
+      const targetTasksCount = this.kanbanService.tasks().filter((t) => t.columnId === event.columnId).length;
+
+      this.kanbanService.moveTask(task.taskId, event.columnId, event.status, targetTasksCount)
+        .then(() => {
+          return this.kanbanService.updateTask(task.taskId, taskUpdates);
+        })
+        .then(() => {
+          this.closeEditTaskModal();
+          this.closeTaskDetailsModal();
+          console.log('Task details and status successfully edited.');
+        })
+        .catch(err => {
+          console.error('Failed to move task during edit:', err);
+        });
+    } else {
+      this.kanbanService.updateTask(task.taskId, taskUpdates)
+        .then(() => {
+          this.closeEditTaskModal();
+          this.closeTaskDetailsModal();
+          console.log('Task details successfully edited.');
+        })
+        .catch(err => {
+          console.error('Failed to update task:', err);
+        });
+    }
   }
 
   // --- Board Editing Modal Handlers ---

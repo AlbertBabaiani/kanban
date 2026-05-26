@@ -1,0 +1,117 @@
+<div class="modal-backdrop" (click)="triggerClose()" role="presentation">
+  <div class="modal-content" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    
+    <!-- Modal Title -->
+    <h3 id="modalTitle" class="modal-title">Edit Task</h3>
+
+    <!-- Task Title Form Group -->
+    <div class="form-group">
+      <label class="form-label" for="editTaskTitleInput">Title</label>
+      <div class="input-container">
+        <input 
+          type="text" 
+          id="editTaskTitleInput"
+          #taskTitleInputRef
+          #titleInput
+          placeholder="e.g. Take coffee break" 
+          [value]="title()"
+          (input)="onTitleInput(titleInput.value)"
+          [class.input-error]="showErrors() && title().trim() === ''"
+        />
+        @if (showErrors() && title().trim() === '') {
+          <span class="error-msg">Can't be empty</span>
+        }
+      </div>
+    </div>
+
+    <!-- Description Form Group -->
+    <div class="form-group">
+      <label class="form-label" for="editTaskDescInput">Description</label>
+      <textarea 
+        id="editTaskDescInput"
+        #descTextarea
+        placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little." 
+        [value]="description()"
+        (input)="onDescriptionInput(descTextarea.value)"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <!-- Subtasks Builder Form Group -->
+    <div class="form-group">
+      <label class="form-label">Subtasks</label>
+      
+      <div class="subtasks-builder-list">
+        @for (sub of subtasks(); track $index; let index = $index) {
+          <div class="subtask-input-row">
+            
+            <!-- Subtask Title Input -->
+            <div class="input-container flex-grow">
+              <input 
+                type="text" 
+                #subInput
+                [placeholder]="index === 0 ? 'e.g. Make coffee' : 'e.g. Drink coffee'" 
+                [value]="sub.title"
+                (input)="updateSubtaskTitle(index, subInput.value)"
+                [class.input-error]="showErrors() && sub.title.trim() === ''"
+              />
+              @if (showErrors() && sub.title.trim() === '') {
+                <span class="error-msg">Can't be empty</span>
+              }
+            </div>
+
+            <!-- Remove Subtask Action Button -->
+            <button 
+              class="remove-subtask-btn" 
+              (click)="removeSubtask(index)" 
+              aria-label="Remove subtask"
+            >
+              <img src="icons/icon-cross.svg" alt="Remove" />
+            </button>
+
+          </div>
+        }
+      </div>
+
+      <!-- Add New Subtask Row Primary Action -->
+      <button 
+        class="btn btn-secondary add-subtask-btn" 
+        (click)="addSubtask()"
+        aria-label="Add new subtask row"
+      >
+        + Add New Subtask
+      </button>
+    </div>
+
+    <!-- Column Selector Form Group -->
+    <div class="form-group">
+      <label class="form-label" for="editTaskStatusSelect">Status</label>
+      <div class="select-container">
+        <select 
+          id="editTaskStatusSelect"
+          #columnSelect
+          [value]="selectedColumnId()"
+          (change)="onColumnSelect(columnSelect.value)"
+        >
+          @for (col of activeBoard().columns; track col.columnId) {
+            <option [value]="col.columnId" [selected]="col.columnId === selectedColumnId()">{{ col.name }}</option>
+          }
+        </select>
+        <span class="select-arrow" aria-hidden="true">
+          <img src="icons/icon-chevron-down.svg" alt="" />
+        </span>
+      </div>
+    </div>
+
+    <!-- Submit Task Creation CTA -->
+    <button 
+      class="btn btn-primary submit-task-btn" 
+      [disabled]="activeBoard().columns.length === 0"
+      (click)="triggerSubmit()"
+      aria-label="Save task changes"
+    >
+      Save Changes
+    </button>
+
+  </div>
+</div>
