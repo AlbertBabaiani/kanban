@@ -25,6 +25,7 @@
   align-items: center;
   justify-content: center;
   padding: 2.4rem;
+  overflow-y: auto;
   animation: modalFadeIn 0.2s ease-out forwards;
 }
 
@@ -40,6 +41,7 @@
   gap: 2.4rem;
   @include interactive-transition(background-color, box-shadow);
   animation: modalSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  margin: auto;
 
   @include respond-to(mobile) {
     padding: 2.4rem;
